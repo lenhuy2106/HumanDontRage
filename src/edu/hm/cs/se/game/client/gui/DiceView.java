@@ -43,6 +43,7 @@ public class DiceView extends JPanel implements Observer {
     private int index = 1;
 
     //sooso
+    //soosos und nicht so
     /**
      * Custom-Constructor. Initializes the panel and its components.
      *
