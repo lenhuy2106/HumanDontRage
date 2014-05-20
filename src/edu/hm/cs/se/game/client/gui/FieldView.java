@@ -1,3 +1,12 @@
+/*
+ *University of Applied Science Munich 2014
+ *Faculty:    Computer Science FK07
+ *Name:       Mathias Long Yan && Huy Nhu Le
+ *Date:       2014-05-20
+ *Subject:    SE 2
+ *Lecturer:   Prof. Dr. U. Hammerschall
+ *Project:    Human dont Rage
+ */
 package edu.hm.cs.se.game.client.gui;
 
 import java.awt.BasicStroke;
