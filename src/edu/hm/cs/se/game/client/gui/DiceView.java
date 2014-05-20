@@ -42,7 +42,7 @@ public class DiceView extends JPanel implements Observer {
 		dice = new JLabel();
 		add(dice);
 
-		button = new JButton("Würfeln");
+		button = new JButton("Wuerfeln");
 		button.addActionListener(new ActionListener() {
 
 			@Override
