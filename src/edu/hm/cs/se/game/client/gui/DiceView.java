@@ -1,3 +1,16 @@
+/*
+ * (C) Nhu-Huy Le, nle@hm.edu
+ * Oracle Corporation Java 1.8.0
+ * Microsoft Windows 7 Professional
+ * 6.1.7601 Service Pack 1 Build 7601
+ * This program is created while attending the courses
+ * at Hochschule Muenchen Fak07, Germany in SS14.
+
+SE2: Praktikum
+Excercise 2 - HumanDontRage
+
+ - 20/5/2014
+ */
 package edu.hm.cs.se.game.client.gui;
 
 import java.awt.event.ActionEvent;
@@ -42,8 +55,6 @@ public class DiceView extends JPanel implements Observer {
      */
     private int index = 1;
 
-    //ADSFASDF
-    //soosos und nicht so und nochwas 
     /**
      * Custom-Constructor. Initializes the panel and its components.
      *
