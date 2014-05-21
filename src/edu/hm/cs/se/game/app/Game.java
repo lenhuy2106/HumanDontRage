@@ -92,7 +92,6 @@ public class Game extends Observable {
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
-        //////////////////////////////////////////////////////////
         refresh();
     }
 
