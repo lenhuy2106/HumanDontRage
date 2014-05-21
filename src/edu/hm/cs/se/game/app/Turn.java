@@ -3,10 +3,9 @@
  * Oracle Corporation Java 1.8.0
  * Microsoft Windows 7 Professional
  * 6.1.7601 Service Pack 1 Build 7601
- * This program is created while attending the courses 
+ * This program is created while attending the courses
  * at Hochschule Muenchen Fak07, Germany in SS14.
  */
-
 package edu.hm.cs.se.game.app;
 
 /**
@@ -15,24 +14,33 @@ package edu.hm.cs.se.game.app;
  */
 public class Turn {
 
-    /** reference to player doing step */
+    /**
+     * reference to player doing step
+     */
     private final Player player;
-    private final int rule;
+    /**
+     * releant state current inhabited 1: player may roll 2: startfield is
+     * occupied, player may roll 3: player may move
+     */
+    private int state;
+    private final int dice;
+    private final int initTry;
 
-    public Turn(Player player, int rule) {
+    public Turn(Player player) {
+
         this.player = player;
-        this.rule = rule;
+        dice = player.getGame().getDice();
+        state = 1;
+        initTry = 3;
+    }
+
+    public void doStep() {
+
+        switch (state) {
+            case 1:
+                if ();
+        }
 
     }
-    
-    public void doStep() {
-        final int dice = player.getGame().getDice();
-        
-        switch (rule) {
-            case 1:;
-            default:;
-        }
-        
-    }
-    
+
 }
