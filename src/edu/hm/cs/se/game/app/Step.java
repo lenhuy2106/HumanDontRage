@@ -14,16 +14,19 @@ package edu.hm.cs.se.game.app;
  * @author Nhu Huy Le - nle@hm.edu
  */
 public class Step {
-    /** reference to current player */
-    private Player player;
 
-    public void setPlayer(Player player) {
+    /** reference to player doing step */
+    private final Player player;
+
+
+    public Step(Player player) {
         this.player = player;
+
     }
     
     public void doStep() {
         
+        
     }
-    
     
 }
