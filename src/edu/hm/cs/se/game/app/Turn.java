@@ -13,19 +13,25 @@ package edu.hm.cs.se.game.app;
  *
  * @author Nhu Huy Le - nle@hm.edu
  */
-public class Step {
+public class Turn {
 
     /** reference to player doing step */
     private final Player player;
+    private final int rule;
 
-
-    public Step(Player player) {
+    public Turn(Player player, int rule) {
         this.player = player;
+        this.rule = rule;
 
     }
     
     public void doStep() {
+        final int dice = player.getGame().getDice();
         
+        switch (rule) {
+            case 1:;
+            default:;
+        }
         
     }
     
