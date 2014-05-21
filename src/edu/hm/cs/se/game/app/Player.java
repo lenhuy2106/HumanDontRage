@@ -37,6 +37,26 @@ public class Player {
     /** reference to the game */
     private final Game game;
 
+    public List<Field> getHomeFields() {
+        return homeFields;
+    }
+
+    public List<Field> getEndFields() {
+        return endFields;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
     /**
      * initializes a new player.
      * @param index: index that represents color of the player (0 < index <= 4).
