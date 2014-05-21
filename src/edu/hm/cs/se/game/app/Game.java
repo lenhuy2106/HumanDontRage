@@ -35,10 +35,6 @@ public class Game extends Observable {
      */
     private final List<Player> players = new ArrayList<>();
     /**
-     * current turn of a player
-     */
-    private final Turn turn;
-    /**
      * current player index on turn
      */
     private int curIndex;
@@ -64,13 +60,13 @@ public class Game extends Observable {
             Player player = new Player(i, board, this);
             players.add(player);
         }
-        curIndex = 0;
-        turn = new Turn(players.get(curIndex));
     }
 
-    public Player nextPlayer() {
-        Player player = players.get(++curIndex);
-        return player;
+    /**
+     * start the game.
+     */
+    public void start() {
+
     }
 
     /**

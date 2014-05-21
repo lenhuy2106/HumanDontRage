@@ -71,7 +71,7 @@ public class DiceView extends JPanel implements Observer {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                new Turn(game).doStep();
+                game.roll();
             }
 
         });
