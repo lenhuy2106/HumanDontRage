@@ -14,7 +14,6 @@ Excercise 2 - HumanDontRage
 package edu.hm.cs.se.game.client.gui;
 
 import edu.hm.cs.se.game.app.Game;
-import edu.hm.cs.se.game.app.Turn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;

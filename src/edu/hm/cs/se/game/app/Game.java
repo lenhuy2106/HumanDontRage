@@ -59,20 +59,6 @@ public class Game extends Observable {
     }
 
     /**
-     * start the game.
-     */
-    public void start() {
-        boolean noWinner = true;
-
-        while (noWinner) {
-            // TODO: finish-turn instead boolean
-            for (Player player : players) {
-                new Turn(player).progress();
-            }
-        }
-    }
-
-    /**
      * roll a random number between 1 and 6.
      */
     public void roll() {

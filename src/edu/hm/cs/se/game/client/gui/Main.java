@@ -59,8 +59,6 @@ public class Main extends JFrame {
                     frame.add(new BoardView(game, board), BorderLayout.CENTER);
                     frame.setVisible(true);
 
-                    // start da game
-                    game.start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
