@@ -103,7 +103,7 @@ public class Game extends Observable {
     public int getDice() {
         return dice;
     }
-
+  
     /**
      * notify View about changes in the model.
      */
