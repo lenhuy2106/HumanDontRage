@@ -35,10 +35,6 @@ public class Game extends Observable {
      */
     private final List<Player> players = new ArrayList<>();
     /**
-     * current player index on turn
-     */
-    private int curIndex;
-    /**
      * list of all simple game fields
      */
     private final List<Field> fields;
@@ -66,7 +62,14 @@ public class Game extends Observable {
      * start the game.
      */
     public void start() {
+        boolean noWinner = true;
 
+        while (noWinner) {
+            // TODO: finish-turn instead boolean
+            for (Player player : players) {
+                new Turn(player).progress();
+            }
+        }
     }
 
     /**
