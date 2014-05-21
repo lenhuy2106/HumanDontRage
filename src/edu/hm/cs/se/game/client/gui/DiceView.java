@@ -13,16 +13,15 @@ Excercise 2 - HumanDontRage
  */
 package edu.hm.cs.se.game.client.gui;
 
+import edu.hm.cs.se.game.app.Game;
+import edu.hm.cs.se.game.app.Turn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import edu.hm.cs.se.game.app.Game;
 
 /**
  * Upper panel of the game view. Allows interaction of the player with the game.
@@ -72,7 +71,7 @@ public class DiceView extends JPanel implements Observer {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                game.roll();
+                new Turn(game).doStep();
             }
 
         });

@@ -35,6 +35,10 @@ public class Game extends Observable {
      */
     private final List<Player> players = new ArrayList<>();
     /**
+     * current player index on turn
+     */
+    private int curIndex;
+    /**
      * list of all simple game fields
      */
     private final List<Field> fields;
@@ -56,6 +60,12 @@ public class Game extends Observable {
             Player player = new Player(i, board, this);
             players.add(player);
         }
+        curIndex = 0;
+    }
+
+    public Player nextPlayer() {
+        Player player = players.get(++curIndex);
+        return player;
     }
 
     /**
@@ -103,7 +113,7 @@ public class Game extends Observable {
     public int getDice() {
         return dice;
     }
-  
+
     /**
      * notify View about changes in the model.
      */

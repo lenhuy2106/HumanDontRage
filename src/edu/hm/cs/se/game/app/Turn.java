@@ -17,28 +17,31 @@ public class Turn {
     /**
      * reference to player doing step
      */
-    private final Player player;
+    private final Game game;
     /**
-     * releant state current inhabited 1: player may roll 2: startfield is
-     * occupied, player may roll 3: player may move
+     * relevant state current inhabited 2: startfield is occupied, player may roll 3: player may move
      */
     private int state;
     private final int dice;
-    private final int initTry;
+    private int attempts;
 
-    public Turn(Player player) {
+    public Turn(Game game) {
 
-        this.player = player;
-        dice = player.getGame().getDice();
+        this.game = game;
+        dice = game.getDice();
         state = 1;
-        initTry = 3;
+        attempts = 3;
     }
 
     public void doStep() {
 
         switch (state) {
+            // 1: player may roll
             case 1:
-                if ();
+                if (dice < 6) {
+
+                    attempts--;
+                    };
         }
 
     }
