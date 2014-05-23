@@ -64,7 +64,7 @@ public class Game extends Observable {
             Player player = new Player(i, board, this, (i-1)*10);
             players.add(player);
         }
-        index = 0;
+        index = 1;
         turn = new Turn(players.get(index));
     }
 
@@ -78,7 +78,7 @@ public class Game extends Observable {
         // addon
         if (turn.progress()) {
             index = (index < 4) ? ++index : 1;
-            turn = new Turn(players.get(index));
+            turn = new Turn(players.get(index - 1));
         }
     }
 
@@ -108,7 +108,7 @@ public class Game extends Observable {
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
-        fields.get(field.getIndex()).setPawn(field.getPawn());
+        fields.get(2).setPawn(field.getPawn());
         field.setPawn(null);
         refresh();
     }
