@@ -67,5 +67,4 @@ public class Field {
     public void setPawn(Pawn pawn) {
         this.pawn = pawn;
     }
-
 }
