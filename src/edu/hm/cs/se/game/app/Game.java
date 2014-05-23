@@ -76,7 +76,7 @@ public class Game extends Observable {
         roll(dice);
 
         // addon
-        if (!turn.progress()) {
+        if (turn.progress()) {
             index = (index < 4) ? ++index : 1;
             turn = new Turn(players.get(index));
         }
