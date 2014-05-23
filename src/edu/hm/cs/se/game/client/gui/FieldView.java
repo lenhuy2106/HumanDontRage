@@ -74,7 +74,7 @@ public class FieldView extends JPanel implements MouseListener {
         this.field = field;
         setPreferredSize(new Dimension(40, 40));
         setBackground(Color.WHITE);
-        addMouseListener(this);    // essential line
+        addMouseListener(this);             // essential line
     }
 
     @Override

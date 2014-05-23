@@ -28,7 +28,7 @@ public class GameBoard {
     /** structure of the board */
     private Field[][] board = new Field[11][11];
     /** list of player independent game fields */
-    private final List<Field> fields = new ArrayList<>(); 
+    private final List<Field> fields = new ArrayList<>();
     /** list of home fields for each player */
     private final List<List<Field>> homes = new ArrayList<>();
     /** list of target fields for each player */
@@ -203,7 +203,7 @@ public class GameBoard {
      * return list of target fields of the selected player.
      * @param index of the player.
      * @return list of target fields.
-     */	
+     */
     public List<Field> getEnds(int index) {
 	return ends.get(index);
     }
@@ -217,12 +217,10 @@ public class GameBoard {
     }
 
     /**
-     * return list of simple game fields. 
+     * return list of simple game fields.
      * @return list of game fields.
      */
     public List<Field> getFields() {
 	return fields;
     }
-
-
 }

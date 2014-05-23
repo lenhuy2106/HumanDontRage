@@ -82,7 +82,6 @@ public class BoardView extends JPanel implements Observer {
                 if (model[i][j] != null) {
                     Field field = model[i][j];
                     FieldView next = new FieldView(colors[field.getIndex()], field, game);
-
                     //
                     next.setBackground(colors[field.getIndex()]);
                     //
