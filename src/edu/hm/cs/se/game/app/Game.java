@@ -39,9 +39,17 @@ public class Game extends Observable {
      */
     private final List<Field> fields;
     /**
+     * inhabits the game logic
+     */
+    private Turn turn;
+    /**
      * current value of the dice
      */
     private int dice;
+    /**
+     * current player index on turn
+     */
+    int index;
 
     /**
      * Initializes a new game and selects the first player.
@@ -56,6 +64,8 @@ public class Game extends Observable {
             Player player = new Player(i, board, this);
             players.add(player);
         }
+        index = 0;
+        turn = new Turn(players.get(index));
     }
 
     /**
@@ -64,6 +74,12 @@ public class Game extends Observable {
     public void roll() {
         dice = (int) ((Math.random()) * 6 + 1);
         roll(dice);
+
+        // addon
+        if (!turn.progress()) {
+            index = (index < 4) ? ++index : 1;
+            turn = new Turn(players.get(index));
+        }
     }
 
     /**
