@@ -31,11 +31,33 @@ public class Player {
     /** list of target fields of the player */
     private List<Field> endFields = new ArrayList<>();
     /** list of game fields */
+    private List<Field> pawnFields = new ArrayList<>(4);
+    /** list of game fields */
     private List<Field> fields;
     /** index of the player */
     private final int index;
     /** reference to the game */
     private final Game game;
+    /** start field id */
+    private int startFieldId;
+
+    public int getStartFieldId() {
+        return startFieldId;
+    }
+
+    public Field getStartField() {
+        return fields.get(startFieldId);
+    }
+
+    public void start() {
+        for (Field field : homeFields) {
+            if (field.getPawn() != null) {
+
+                getStartField().setPawn(field.getPawn());
+                field.setPawn(null);
+            }
+        }
+    }
 
     public List<Field> getHomeFields() {
         return homeFields;
@@ -47,6 +69,10 @@ public class Player {
 
     public List<Field> getFields() {
         return fields;
+    }
+
+    public List<Field> getPawnFields() {
+        return pawnFields;
     }
 
     public int getIndex() {
@@ -63,7 +89,7 @@ public class Player {
      * @param fields: player independent game fields
      * @param game: reference to the game
      */
-    public Player(int index, GameBoard board, Game game) {
+    public Player(int index, GameBoard board, Game game, int startFieldId) {
 
 	this.index = index;
 	this.game = game;
@@ -74,8 +100,7 @@ public class Player {
 	for(Field field : homeFields) {
 	    Pawn pawn = new Pawn(index);
 	    field.setPawn(pawn);
+            pawnFields.add(field);
 	}
-
     }
-
 }
