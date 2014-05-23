@@ -61,7 +61,7 @@ public class Game extends Observable {
 
         // initialize four players
         for (int i = 1; i <= NUMBER_OF_PLAYERS; i++) {
-            Player player = new Player(i, board, this);
+            Player player = new Player(i, board, this, (i-1)*10);
             players.add(player);
         }
         index = 0;
@@ -108,6 +108,8 @@ public class Game extends Observable {
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
+        fields.get(field.getIndex()).setPawn(field.getPawn());
+        field.setPawn(null);
         refresh();
     }
 
