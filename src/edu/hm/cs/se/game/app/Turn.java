@@ -33,7 +33,7 @@ public class Turn {
         attemptsLeft = 3;
     }
 
-    public void progress() {
+    public boolean progress() {
 
         switch (state) {
             // 1: player may roll
@@ -46,7 +46,7 @@ public class Turn {
 //                        player.getGame().nextPlayer();
                     }
                 }
-                ;
+                return true;
         }
 
     }
