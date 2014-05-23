@@ -19,7 +19,9 @@ public class Turn {
      */
     private final Player player;
     /**
-     * relevant state current inhabited 2: startfield is occupied, player may roll 3: player may move
+     * relevant state current inhabited  1: player may roll
+                                         2: startfield is occupied, player may roll
+                                         3: player may move
      */
     private int state;
     private final int dice;
@@ -35,18 +37,52 @@ public class Turn {
 
     public boolean progress() {
 
+        boolean nextPlayer = false;
         switch (state) {
-            // 1: player may roll
+
             case 1:
                 if (dice < 6) {
-                    // TODO: noPawnMoving
-                    if (attemptsLeft > 1 /* && noPawnsMoving */) {
-                        attemptsLeft--;
-                    } else if (attemptsLeft == 0 /* && noPawnsMoving */) {
-//                        player.getGame().nextPlayer();
+                    if (attemptsLeft > 1) {
+                                                    // row 1
+                           attemptsLeft--;          // TODO: noPawnMoving
+                    } else if (attemptsLeft == 1) {
+                                                    // row 2
+                           nextPlayer = true;       // TODO: noPawnMoving
+                    } else if (false) {
+                        ;                           // row 7
+                                                    // TODO: pawnMayMove &&
+                                                    //       startFieldFree
+                    }
+                } else if (dice == 6) {
+                    if  (attemptsLeft >= 1) {
+                        state = 2;                  // row 3
+                                                    // TODO: pawnAtHome &&
+                                                    //       startFieldFree
+                    } else if (false) {
+                        ;                           // row 8
+                                                    // TODO: noPawnAtHome &&
+                                                    //       pawnMayMove
                     }
                 }
-                return true;
+            case 2:
+                if (dice < 6) {
+                    if (false) {                    // row 4
+                                                    // TODO: startPawnMayMove
+                        ;
+                    } else if (dice == 6) {
+                        ;                           // row 5
+                    } else if (dice <= 6) {
+                        ;                           // row 6
+                    }
+                }
+            case 3:
+                if (false) {
+                    ;                               // row 9
+                } else if (false) {
+                    ;                               // row 10
+                }
+            default:
+                return nextPlayer;
         }
 
     }
