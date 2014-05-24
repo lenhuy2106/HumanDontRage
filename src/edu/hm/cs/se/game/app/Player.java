@@ -59,8 +59,9 @@ public class Player {
         this.startField = fields.get((index - 1) * 10);
 
 	for(Field field : homeFields) {
-	    Pawn pawn = new Pawn(index);
-	    field.setPawn(pawn);
+		Pawn pawn = new Pawn(index);
+		field.setPawn(pawn);
+		pawnFields.add(field);
 	}
     }
 

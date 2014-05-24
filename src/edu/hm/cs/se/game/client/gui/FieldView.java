@@ -25,6 +25,8 @@ import javax.swing.JPanel;
 
 import edu.hm.cs.se.game.app.Field;
 import edu.hm.cs.se.game.app.Game;
+import java.awt.Point;
+import java.awt.Polygon;
 
 /**
  * Class for all fields that are visible on the user interface. A visible field
@@ -83,11 +85,17 @@ public class FieldView extends JPanel implements MouseListener {
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(color);
+        int offset = 5;
+        Point p1 = new Point (0 + offset, getHeight()-offset);
+        Point p2 = new Point(getWidth() / 2+offset, getHeight()-offset);
+        Point p3 = new Point(getWidth() / 2+offset, offset);
+        int[] x = { p1.x, p2.x, p3.x };
+        int[] y = { p1.y, p2.y, p3.y };
         if (fill) {
-            g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
+            g.fillPolygon(x, y, x.length);
         } else {
             g2D.setStroke(new BasicStroke(2));
-            g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
+            g.drawPolygon(x, y, x.length);
         }
     }
 
