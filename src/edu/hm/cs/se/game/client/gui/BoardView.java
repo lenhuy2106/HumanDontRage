@@ -1,11 +1,15 @@
 /*
- *University of Applied Science Munich 2014
- *Faculty:    Computer Science FK07
- *Name:       Mathias Long Yan && Huy Nhu Le
- *Date:       2014-05-20
- *Subject:    SE 2
- *Lecturer:   Prof. Dr. U. Hammerschall
- *Project:    Human dont Rage
+ * (C) Nhu-Huy Le, nle@hm.edu
+ * Oracle Corporation Java 1.8.0
+ * Microsoft Windows 7 Professional
+ * 6.1.7601 Service Pack 1 Build 7601
+ * This program is created while attending the courses
+ * at Hochschule Muenchen Fak07, Germany in SS14.
+
+SE2: Praktikum
+Excercise 2 - HumanDontRage
+
+ - 20/5/2014
  */
 package edu.hm.cs.se.game.client.gui;
 
@@ -78,7 +82,6 @@ public class BoardView extends JPanel implements Observer {
                 if (model[i][j] != null) {
                     Field field = model[i][j];
                     FieldView next = new FieldView(colors[field.getIndex()], field, game);
-
                     //
                     next.setBackground(colors[field.getIndex()]);
                     //

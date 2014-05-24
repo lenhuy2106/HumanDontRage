@@ -41,46 +41,22 @@ public class Player {
     /** start field id */
     private int startFieldId;
 
-    public int getStartFieldId() {
-        return startFieldId;
+    public int getDice() {
+        return game.getDice();
     }
 
-    public Field getStartField() {
-        return fields.get(startFieldId);
-    }
-
+    /**
+     * Moves a pawn from player homefield to player startfield.
+     */
     public void start() {
         for (Field field : homeFields) {
             if (field.getPawn() != null) {
-
-                getStartField().setPawn(field.getPawn());
+                Field startField = fields.get((index - 1) * 10);
+                startField.setPawn(field.getPawn());
                 field.setPawn(null);
+                break;
             }
         }
-    }
-
-    public List<Field> getHomeFields() {
-        return homeFields;
-    }
-
-    public List<Field> getEndFields() {
-        return endFields;
-    }
-
-    public List<Field> getFields() {
-        return fields;
-    }
-
-    public List<Field> getPawnFields() {
-        return pawnFields;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public Game getGame() {
-        return game;
     }
 
     /**
@@ -89,7 +65,7 @@ public class Player {
      * @param fields: player independent game fields
      * @param game: reference to the game
      */
-    public Player(int index, GameBoard board, Game game, int startFieldId) {
+    public Player(int index, GameBoard board, Game game) {
 
 	this.index = index;
 	this.game = game;

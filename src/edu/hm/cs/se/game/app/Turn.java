@@ -33,6 +33,7 @@ public class Turn {
         state = 1;
         attemptsLeft = 3;
     }
+
     /**
      * Action progressing per turn of a player.
      *
@@ -40,8 +41,10 @@ public class Turn {
      */
     public boolean progress() {
 
-        int dice = player.getGame().getDice();
+        int dice = player.getDice();
         boolean nextPlayer = false;
+
+        System.out.println("state:" + state);       // TEST
         switch (state) {
 
             case 1:
