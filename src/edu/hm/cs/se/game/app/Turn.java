@@ -49,47 +49,50 @@ public class Turn {
 
             case 1:
                 if (dice < 6) {
-                    if (attemptsLeft > 1) {
-                                                    // row 1
-                           attemptsLeft--;          // TODO: noPawnMoving
-                    } else if (attemptsLeft == 1) {
-                                                    // row 2
-                           nextPlayer = true;       // TODO: noPawnMoving
+                    if (attemptsLeft > 1 && player.pawnsOnMove() == 0) {
+                        System.out.println("row 1");        // TEST
+                        attemptsLeft--;                     // row 1
+
+                    } else if (attemptsLeft == 1 && player.pawnsOnMove() == 0) {
+                        System.out.println("row 2");        // TEST
+                                                            // row 2
+                        nextPlayer = true;                  // TODO: noPawnMoving
                     } else if (false) {
-                        ;                           // row 7
-                                                    // TODO: pawnMayMove &&
-                                                    //       startFieldFree
+                        ;                                   // row 7
+                                                            // TODO: pawnMayMove &&
+                                                            //       startFieldFree
                     }
-                } else if (dice == 6) {
+                } else if (dice == 6 && player.pawnsOnHome() != 0) {
                     if  (attemptsLeft >= 1) {
-                        state = 2;                  // row 3
-                        player.start();             // TODO: pawnAtHome &&
-                                                    //       startFieldFree
+                        state = 2;                          // row 3
+                        player.start();                     // TODO: pawnAtHome &&
+                                                            //       startFieldFree
                     } else if (false) {
-                        ;                           // row 8
-                                                    // TODO: noPawnAtHome &&
-                                                    //       pawnMayMove
+                        ;                                   // row 8
+                                                            // TODO: noPawnAtHome &&
+                                                            //       pawnMayMove
                     }
                 }
                 break;
             case 2:
                 if (dice < 6) {
-                    if (false) {                    // row 4
-                                                    // TODO: startPawnMayMove
+                    if (player.startPawnMayMove()) {
+                                                            // row 4
+                                                            // TODO: startPawnMayMove
                         state = 1;
                     } else if (dice == 6) {
-                        state = 1;                  // row 5
+                        state = 1;                          // row 5
                     } else if (dice <= 6) {
                         state = 1;
-                        ;                           // row 6
+                        ;                                   // row 6
                     }
                 }
                 break;
             case 3:
                 if (false) {
-                    ;                               // row 9
+                    ;                                       // row 9
                 } else if (false) {
-                    ;                               // row 10
+                    ;                                       // row 10
                 }
                 break;
             case 4:
