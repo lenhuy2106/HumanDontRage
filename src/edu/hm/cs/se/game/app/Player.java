@@ -31,32 +31,16 @@ public class Player {
     /** list of target fields of the player */
     private List<Field> endFields = new ArrayList<>();
     /** list of game fields */
-    private List<Field> pawnFields = new ArrayList<>(4);
-    /** list of game fields */
     private List<Field> fields;
     /** index of the player */
     private final int index;
     /** reference to the game */
     private final Game game;
-    /** start field id */
-    private int startFieldId;
+    /** start field */
+    private Field startField;
 
     public int getDice() {
         return game.getDice();
-    }
-
-    /**
-     * Moves a pawn from player homefield to player startfield.
-     */
-    public void start() {
-        for (Field field : homeFields) {
-            if (field.getPawn() != null) {
-                Field startField = fields.get((index - 1) * 10);
-                startField.setPawn(field.getPawn());
-                field.setPawn(null);
-                break;
-            }
-        }
     }
 
     /**
@@ -72,11 +56,63 @@ public class Player {
 	this.fields = board.getFields();
 	this.homeFields = board.getHomes(index-1);
 	this.endFields = board.getEnds(index-1);
+        this.startField = fields.get((index - 1) * 10);
 
 	for(Field field : homeFields) {
 	    Pawn pawn = new Pawn(index);
 	    field.setPawn(pawn);
-            pawnFields.add(field);
 	}
+    }
+
+    /**
+     * Moves a pawn from player homefield to player startfield.
+     */
+    public void start() {
+        for (Field field : homeFields) {
+            if (field.getPawn() != null) {
+                ;
+                startField.setPawn(field.getPawn());
+                field.setPawn(null);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Number of pawns moving on simple fields.
+     * @return number of pawns moving.
+     */
+    public int pawnsOnMove() {
+        int pawnsOnMove = 4;
+
+        pawnsOnMove -= (pawnsOnHome() + pawnsOnEnd());
+        return pawnsOnMove;
+    }
+
+    public int pawnsOnHome() {
+        int pawnsOnHome = 0;
+        for (Field field : homeFields) {
+            if (field.getPawn() != null) {
+                pawnsOnHome++;
+            }
+        }
+        return pawnsOnHome;
+    }
+
+    public int pawnsOnEnd() {
+        int pawnsOnEnd = 0;
+        for (Field field : endFields) {
+            if (field.getPawn() != null) {
+                pawnsOnEnd++;
+            }
+        }
+        return pawnsOnEnd;
+    }
+
+    public boolean startPawnMayMove() {
+        int startId = (index - 1) * 10;
+        Field targetField = fields.get(startId + getDice());
+        Pawn targetPawn = targetField.getPawn();
+        return (targetPawn == null) ? true : targetPawn.getIndex() != index;
     }
 }
