@@ -61,7 +61,6 @@ public class Player {
 	for(Field field : homeFields) {
 		Pawn pawn = new Pawn(index);
 		field.setPawn(pawn);
-		pawnFields.add(field);
 	}
     }
 
