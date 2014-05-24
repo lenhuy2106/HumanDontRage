@@ -110,7 +110,7 @@ public class GameBoard {
 	List<Field> p1 = new ArrayList<>();
 	for(int i = 0; i < 2; i++) {
 	    for(int j = 0; j < 2; j++) {
-		field = new Field(1);
+		field = new Field(0);               // 1
 		board[j][i] = field;
 		p1.add(field);
 	    }
@@ -120,8 +120,8 @@ public class GameBoard {
 	// blue player
 	List<Field> p2 = new ArrayList<>();
 	for(int i = 0; i < 2; i++) {
-	    for(int j = 9; j < 11; j++) {
-		field = new Field(2);
+	    for(int j = 9; j < 11; j++) {           // 2
+		field = new Field(0);
 		board[j][i] = field;
 		p2.add(field);
 	    }
@@ -132,7 +132,7 @@ public class GameBoard {
 	List<Field> p3 = new ArrayList<>();
 	for(int i = 9; i < 11; i++) {
 	    for(int j = 9; j < 11; j++) {
-		field = new Field(3);
+		field = new Field(0);               // 3
 		board[j][i] = field;
 		p3.add(field);
 	    }
@@ -143,7 +143,7 @@ public class GameBoard {
 	List<Field> p4 = new ArrayList<>();
 	for(int i = 9; i < 11; i++) {
 	    for(int j = 0; j < 2; j++) {
-		field = new Field(4);
+		field = new Field(0);               // 4
 		board[j][i] = field;
 		p4.add(field);
 	    }
