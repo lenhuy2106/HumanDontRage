@@ -41,8 +41,12 @@ public class Player {
     /** start field id */
     private int startFieldId;
 
+    public int getDice() {
+        return game.getDice();
+    }
+
     /**
-     * Moves a pawn from homefield to startfield.
+     * Moves a pawn from player homefield to player startfield.
      */
     public void start() {
         for (Field field : homeFields) {
@@ -53,30 +57,6 @@ public class Player {
                 break;
             }
         }
-    }
-
-    public List<Field> getHomeFields() {
-        return homeFields;
-    }
-
-    public List<Field> getEndFields() {
-        return endFields;
-    }
-
-    public List<Field> getFields() {
-        return fields;
-    }
-
-    public List<Field> getPawnFields() {
-        return pawnFields;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public Game getGame() {
-        return game;
     }
 
     /**

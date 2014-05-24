@@ -40,7 +40,7 @@ public class Turn {
      */
     public boolean progress() {
 
-        int dice = player.getGame().getDice();
+        int dice = player.getDice();
         boolean nextPlayer = false;
         switch (state) {
 
