@@ -61,7 +61,7 @@ public class Game extends Observable {
 
         // initialize four players
         for (int i = 1; i <= NUMBER_OF_PLAYERS; i++) {
-            Player player = new Player(i, board, this, (i-1)*10);
+            Player player = new Player(i, board, this);
             players.add(player);
         }
         index = 1;
@@ -109,12 +109,14 @@ public class Game extends Observable {
      */
     public void move(Field field) {
         Pawn pawn = field.getPawn();
-        if (pawn != null) {
-            int nextId = fields.indexOf(field) + 1;
+        if (pawn != null && field.getIndex() == 0) {
+            int nextId = fields.indexOf(field) + dice;
             fields.get(nextId).setPawn(pawn);
             field.setPawn(null);
         }
         refresh();
+        // TEST
+        System.out.println(fields.indexOf(field));
     }
 
     /**
