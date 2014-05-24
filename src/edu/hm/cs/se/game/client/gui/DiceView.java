@@ -86,9 +86,8 @@ public class DiceView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable arg0, Object arg1) {
-        int next = (index < 4) ? ++index : 1;
-        index = next;
-        player.setBackground(BoardView.colors[next]);
+        index = game.getIndex();
+        player.setBackground(BoardView.colors[index]);
         dice.setText(Integer.toString(game.getDice()));
     }
 

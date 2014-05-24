@@ -69,6 +69,14 @@ public class Game extends Observable {
     }
 
     /**
+     * Get current player index on turn.
+     * @return current player index
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    /**
      * roll a random number between 1 and 6.
      */
     public void roll() {
@@ -79,6 +87,7 @@ public class Game extends Observable {
         if (turn.progress()) {
             index = (index < 4) ? ++index : 1;
             turn = new Turn(players.get(index - 1));
+            System.out.println("NEXT PLAYER: " + index);    // TEST
         }
     }
 
