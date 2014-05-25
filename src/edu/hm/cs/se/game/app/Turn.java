@@ -45,7 +45,7 @@ public class Turn {
         boolean nextPlayer = false;
 
         System.out.println("============");
-        System.out.println("state:" + state);       // TEST
+        System.out.println("state:" + state);               // TEST
         System.out.println("attemptsLeft: " + attemptsLeft);
         System.out.println("pawnsOnMove(): " + player.pawnsOnMove());
 
