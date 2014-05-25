@@ -116,8 +116,23 @@ public class Player {
         Pawn targetPawn = targetField.getPawn();
         boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
         if (result && move) {
+            game.setOnMove(true);
             game.move(startField);
         }
         return result;
+    }
+
+    public void waitForMove() {
+        game.setOnMove(true);
+    }
+
+    public boolean allPawnsEnd() {
+        boolean allPawnsEnd = true;
+        for (Field field : endFields) {
+            if (field.getPawn() == null) {
+                allPawnsEnd = false;
+            }
+        }
+        return allPawnsEnd;
     }
 }
