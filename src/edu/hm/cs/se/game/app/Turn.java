@@ -53,15 +53,16 @@ public class Turn {
 
             case 1:
                 if (dice < 6) {
-                    if (attemptsLeft > 1 /*&& player.pawnsOnMove() == 0*/) {
+                    if (attemptsLeft > 1 && player.pawnsOnMove() == 0) {
                         System.out.println("row 1");        // TEST
-                        attemptsLeft--;                     // row 1
+                        attemptsLeft--;                     // row 1 - DONE
 
-                    } else if (attemptsLeft == 1 /*&& player.pawnsOnMove() == 0*/) {
+                    } else if (attemptsLeft == 1 && player.pawnsOnMove() == 0) {
                         System.out.println("row 2");        // TEST
-                                                            // row 2
-                        nextPlayer = true;                  // TODO: noPawnMoving
+                                                            // row 2 - DONE
+                        nextPlayer = true;
                     } else if (false) {
+                        System.out.println("row 7");
                         ;                                   // row 7
                                                             // TODO: pawnMayMove &&
                                                             //       startFieldFree
@@ -69,9 +70,9 @@ public class Turn {
                 } else if (dice == 6 && player.pawnsOnHome() != 0) {
                     if  (attemptsLeft >= 1) {
                         System.out.println("row 3");        // TEST
-                        state = 2;                          // row 3
-                        player.start();                     // TODO: pawnAtHome &&
-                        attemptsLeft++;                     //       startFieldFree
+                        state = 2;                          // row 3 - DONE
+                        player.start();
+                        attemptsLeft++;
                     } else if (false) {
                         System.out.println("row 8");        // TEST
                         ;                                   // row 8
@@ -82,10 +83,11 @@ public class Turn {
                 break;
             case 2:
                 if (dice < 6) {
-                    if (player.startPawnMayMove()) {
+                    if (player.startPawnMayMove(true)) {
+
+                        nextPlayer = true;
                         System.out.println("row 4");        // TEST
                                                             // row 4
-                                                            // TODO: startPawnMayMove
                         state = 1;
                     } else if (dice == 6) {
                         System.out.println("row 5");        // TEST
