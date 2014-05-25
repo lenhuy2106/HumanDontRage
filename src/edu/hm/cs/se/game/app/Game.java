@@ -50,6 +50,10 @@ public class Game extends Observable {
      * current player index on turn
      */
     int index;
+    /**
+     * indicates if player is on move (waiting)
+     */
+    private boolean isOnMove;
 
     /**
      * Initializes a new game and selects the first player.
@@ -66,6 +70,7 @@ public class Game extends Observable {
         }
         index = 1;
         turn = new Turn(players.get(index));
+        isOnMove = false;
     }
 
     /**
@@ -83,12 +88,7 @@ public class Game extends Observable {
         dice = (int) ((Math.random()) * 6 + 1);
         roll(dice);
 
-        // addon
-        if (turn.progress()) {
-            index = (index < 4) ? ++index : 1;
-            turn = new Turn(players.get(index - 1));
-            System.out.println("NEXT PLAYER: " + index);    // TEST
-        }
+        nextTurn();
         refresh();
     }
 
@@ -112,16 +112,21 @@ public class Game extends Observable {
     }
 
     /**
-     * move pawn situated on the field.
+     * Moves pawn situated on the field.
+     * Only possible if field is a simple field and game is on move, not roll.
      *
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
-        if (field.getIndex() == 0) {
+        boolean isSimpleField = fields.indexOf(field) != -1;
+        if (isSimpleField && isOnMove) {
             int nextId = fields.indexOf(field) + dice;
             fields.get(nextId).setPawn(field.getPawn());
             field.setPawn(null);
+            nextTurn();
+            setOnMove(false);
         }
+
         refresh();
         // TEST
         System.out.println(fields.indexOf(field));
@@ -142,5 +147,22 @@ public class Game extends Observable {
     public void refresh() {
         setChanged();
         notifyObservers();
+    }
+
+    public void setOnMove(boolean onMove) {
+        isOnMove = onMove;
+        refresh();
+    }
+
+    public boolean isOnMove() {
+        return isOnMove;
+    }
+
+    private void nextTurn() {
+        if (turn.progress()) {
+            index = (index < 4) ? ++index : 1;
+            turn = new Turn(players.get(index - 1));
+            System.out.println("NEXT PLAYER: " + index);    // TEST
+        }
     }
 }
