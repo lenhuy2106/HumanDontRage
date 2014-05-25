@@ -61,9 +61,10 @@ public class Turn {
                         System.out.println("row 2");        // TEST
                                                             // row 2 - DONE
                         nextPlayer = true;
-                    } else if (false) {
-                        System.out.println("row 7");
-                        ;                                   // row 7
+                    } else if (player.pawnsOnMove() != 0) {
+                        player.waitForMove();
+                        state = 3;
+                        System.out.println("row 7");        // row 7
                                                             // TODO: pawnMayMove &&
                                                             //       startFieldFree
                     }
@@ -82,30 +83,26 @@ public class Turn {
                 }
                 break;
             case 2:
-                if (dice < 6) {
-                    if (player.startPawnMayMove(true)) {
-
+                if (dice < 6 && player.startPawnMayMove(true)) {
                         nextPlayer = true;
-                        System.out.println("row 4");        // TEST
-                                                            // row 4
+                        System.out.println("row 4,6");        // TEST
+                                                            // row 4,6 - DONE
                         state = 1;
-                    } else if (dice == 6) {
+
+                } else if (dice == 6 && player.startPawnMayMove(true)) {
                         System.out.println("row 5");        // TEST
-                        state = 1;                          // row 5
-                    } else if (dice <= 6) {
-                        System.out.println("row 6");        // TEST
-                        state = 1;
-                        ;                                   // row 6
-                    }
+                        state = 1;                          // row 5 - DONE
                 }
                 break;
             case 3:
-                if (false) {
-                    System.out.println("row 9");            // TEST
-                    ;                                       // row 9
-                } else if (false) {
+                if (player.allPawnsEnd()) {
                     System.out.println("row 10");           // TEST
-                    ;                                       // row 10
+                                                            // row 9
+                    System.out.println("DA WIN");
+                    System.exit(0);
+                } else {
+                    System.out.println("row 9");            // TEST
+                    nextPlayer = true;                      // row 10
                 }
                 break;
             case 4:
