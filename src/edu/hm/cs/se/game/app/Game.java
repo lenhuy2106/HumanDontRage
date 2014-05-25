@@ -89,6 +89,7 @@ public class Game extends Observable {
             turn = new Turn(players.get(index - 1));
             System.out.println("NEXT PLAYER: " + index);    // TEST
         }
+        refresh();
     }
 
     /**
@@ -98,7 +99,6 @@ public class Game extends Observable {
      */
     public void roll(int number) {
         dice = number;
-        refresh();
     }
 
     /**

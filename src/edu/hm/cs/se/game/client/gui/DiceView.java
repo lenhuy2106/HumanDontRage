@@ -44,8 +44,6 @@ public class DiceView extends JPanel implements Observer {
      * button to roll
      */
     private final JButton button;
-
-    private final JLabel message;
     /**
      * reference to the game
      */
@@ -74,12 +72,6 @@ public class DiceView extends JPanel implements Observer {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 game.roll();
-
-                message.setText("");
-                int nextIndex = game.getIndex();
-                if (nextIndex != index) {
-                    message.setText("NEXT PLAYER!");
-                }
             }
 
         });
@@ -88,10 +80,6 @@ public class DiceView extends JPanel implements Observer {
         player = new JPanel();
         player.setBackground(BoardView.colors[index]);
         add(player);
-
-        message = new JLabel();
-        add(message);
-
     }
 
     /**
