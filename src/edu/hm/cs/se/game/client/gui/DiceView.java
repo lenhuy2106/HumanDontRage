@@ -66,7 +66,7 @@ public class DiceView extends JPanel implements Observer {
         dice = new JLabel();
         add(dice);
 
-        button = new JButton("Wuerfeln");
+        button = new JButton("ROLL");
         button.addActionListener(new ActionListener() {
 
             @Override
@@ -87,6 +87,12 @@ public class DiceView extends JPanel implements Observer {
      */
     @Override
     public void update(Observable arg0, Object arg1) {
+        button.setEnabled(!game.isOnMove());
+        if (game.isOnMove()) {
+            button.setText("MOVE");
+        } else {
+            button.setText("ROLL");
+        }
         index = game.getIndex();
         player.setBackground(BoardView.colors[index]);
         dice.setText(Integer.toString(game.getDice()));
