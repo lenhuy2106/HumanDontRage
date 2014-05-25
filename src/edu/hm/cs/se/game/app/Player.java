@@ -68,12 +68,13 @@ public class Player {
      * Moves a pawn from player homefield to player startfield.
      */
     public void start() {
-        for (Field field : homeFields) {
-            if (field.getPawn() != null) {
-                ;
-                startField.setPawn(field.getPawn());
-                field.setPawn(null);
-                break;
+        if (startField.getPawn() == null) {
+            for (Field field : homeFields) {
+                if (field.getPawn() != null) {
+                    startField.setPawn(field.getPawn());
+                    field.setPawn(null);
+                    break;
+                }
             }
         }
     }
@@ -109,10 +110,14 @@ public class Player {
         return pawnsOnEnd;
     }
 
-    public boolean startPawnMayMove() {
+    public boolean startPawnMayMove(boolean move) {
         int startId = (index - 1) * 10;
         Field targetField = fields.get(startId + getDice());
         Pawn targetPawn = targetField.getPawn();
-        return (targetPawn == null) ? true : targetPawn.getIndex() != index;
+        boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
+        if (result && move) {
+            game.move(startField);
+        }
+        return result;
     }
 }
