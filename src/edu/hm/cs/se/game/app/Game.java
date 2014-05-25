@@ -117,10 +117,9 @@ public class Game extends Observable {
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
-        Pawn pawn = field.getPawn();
-        if (pawn != null && field.getIndex() == 0) {
+        if (field.getIndex() == 0) {
             int nextId = fields.indexOf(field) + dice;
-            fields.get(nextId).setPawn(pawn);
+            fields.get(nextId).setPawn(field.getPawn());
             field.setPawn(null);
         }
         refresh();
