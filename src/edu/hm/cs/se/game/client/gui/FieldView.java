@@ -26,7 +26,6 @@ import javax.swing.JPanel;
 import edu.hm.cs.se.game.app.Field;
 import edu.hm.cs.se.game.app.Game;
 import java.awt.Point;
-import java.awt.Polygon;
 
 /**
  * Class for all fields that are visible on the user interface. A visible field
@@ -115,7 +114,7 @@ public class FieldView extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent arg0) {
-        if (field.getPawn() != null && game.getIndex() == field.getPawn().getIndex()) {
+        if (field.getPawn() != null && game.isOnMove()) {
             game.move(field);
         }
     }

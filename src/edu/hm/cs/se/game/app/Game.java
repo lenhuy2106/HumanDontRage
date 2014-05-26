@@ -51,9 +51,13 @@ public class Game extends Observable {
      */
     int index;
     /**
-     * indicates if player is on move (waiting)
+     * indicates if player is on move (no roll)
      */
     private boolean isOnMove;
+    /**
+     * indicates if player can bash a victim pawn (choice)
+     */
+    private boolean isOnBashing;
 
     /**
      * Initializes a new game and selects the first player.
@@ -118,18 +122,26 @@ public class Game extends Observable {
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
+        boolean isOwnPawn = index == field.getPawn().getIndex();
         boolean isSimpleField = fields.indexOf(field) != -1;
-        if (isSimpleField && isOnMove) {
+
+        if (isSimpleField && isOwnPawn) {
             int nextId = fields.indexOf(field) + dice;
-            fields.get(nextId).setPawn(field.getPawn());
+            Field targetField = fields.get(nextId);
+
+            // HERE
+            if (targetField.getPawn() != null)
+            targetField.setPawn(field.getPawn());
             field.setPawn(null);
+
             nextTurn();
             setOnMove(false);
         }
 
         refresh();
-        // TEST
-        System.out.println(fields.indexOf(field));
+
+        System.out.println(fields.indexOf(field));          // TEST
+
     }
 
     /**
@@ -154,6 +166,11 @@ public class Game extends Observable {
         refresh();
     }
 
+    public void setOnBash(boolean onBash) {
+        isOnMove = onBash;
+        refresh();
+    }
+
     public boolean isOnMove() {
         return isOnMove;
     }
@@ -164,5 +181,6 @@ public class Game extends Observable {
             turn = new Turn(players.get(index - 1));
             System.out.println("NEXT PLAYER: " + index);    // TEST
         }
+        refresh();
     }
 }
