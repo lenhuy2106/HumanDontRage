@@ -22,7 +22,7 @@ public class Turn {
      * relevant state current inhabited  1: player may roll
                                          2: startfield is occupied, player may roll
                                          3: player may move
-                                         4: end
+     * rules are the same as the ones in the ruleset table
      */
     private int state;
     private int attemptsLeft;
@@ -45,7 +45,7 @@ public class Turn {
         boolean nextPlayer = false;
 
         System.out.println("============");
-        System.out.println("state:" + state);               // TEST
+        System.out.println("state:" + state);
         System.out.println("attemptsLeft: " + attemptsLeft);
         System.out.println("pawnsOnMove(): " + player.pawnsOnMove());
 
@@ -54,58 +54,53 @@ public class Turn {
             case 1:
                 if (dice < 6) {
                     if (attemptsLeft > 1 && player.pawnsOnMove() == 0) {
-                        System.out.println("row 1");        // TEST
-                        attemptsLeft--;                     // row 1 - DONE
+                        System.out.println("row 1");
+                        attemptsLeft--;                     // rule 1 - DONE
 
                     } else if (attemptsLeft == 1 && player.pawnsOnMove() == 0) {
-                        System.out.println("row 2");        // TEST
-                                                            // row 2 - DONE
+                        System.out.println("row 2");
+                                                            // rule 2 - DONE
                         nextPlayer = true;
                     } else if (player.pawnsOnMove() != 0) {
                         player.waitForMove();
                         state = 3;
-                        System.out.println("row 7");        // row 7
-                                                            // TODO: pawnMayMove &&
-                                                            //       startFieldFree
+                        System.out.println("row 7");        // rule 7 - DONE
                     }
                 } else if (dice == 6 && player.pawnsOnHome() != 0) {
                     if  (attemptsLeft >= 1) {
-                        System.out.println("row 3");        // TEST
-                        state = 2;                          // row 3 - DONE
+                        System.out.println("row 3");
+                        state = 2;                          // rule 3 - DONE
                         player.start();
                         attemptsLeft++;
-                    } else if (false) {
-                        System.out.println("row 8");        // TEST
-                        ;                                   // row 8
-                                                            // TODO: noPawnAtHome &&
-                                                            //       pawnMayMove
+                    } else if (player.pawnsOnHome() == 0 && player.pawnsOnMove() != 0) {
+                        System.out.println("row 8");
+                        player.waitForMove();
+                        state = 3;                          // rule 8 - DONE
                     }
                 }
                 break;
             case 2:
                 if (dice < 6 && player.startPawnMayMove(true)) {
                         nextPlayer = true;
-                        System.out.println("row 4,6");        // TEST
-                                                            // row 4,6 - DONE
+                        System.out.println("row 4,6");
+                                                            // rule 4,6 - DONE
                         state = 1;
 
                 } else if (dice == 6 && player.startPawnMayMove(true)) {
-                        System.out.println("row 5");        // TEST
-                        state = 1;                          // row 5 - DONE
+                        System.out.println("row 5");
+                        state = 1;                          // rule 5 - DONE
                 }
                 break;
             case 3:
-                if (player.allPawnsEnd()) {
-                    System.out.println("row 10");           // TEST
-                                                            // row 9
-                    System.out.println("DA WIN");
+                if (player.pawnsOnEnd() == 4) {
+                    System.out.println("row 10");
+                                                            // rule 10
+                    System.out.println("DA WIN");           // TODO: end message
                     System.exit(0);
                 } else {
-                    System.out.println("row 9");            // TEST
-                    nextPlayer = true;                      // row 10
+                    System.out.println("row 9");
+                    nextPlayer = true;                      // rule 9 - DONE
                 }
-                break;
-            case 4:
                 break;
             default:
                 break;

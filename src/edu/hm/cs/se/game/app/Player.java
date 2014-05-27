@@ -37,7 +37,7 @@ public class Player {
     /** reference to the game */
     private final Game game;
     /** start field */
-    private Field startField;
+    private final Field startField;
 
     public int getDice() {
         return game.getDice();
@@ -110,12 +110,12 @@ public class Player {
         return pawnsOnEnd;
     }
 
-    public boolean startPawnMayMove(boolean move) {
+    public boolean startPawnMayMove(boolean autoMove) {
         int startId = (index - 1) * 10;
         Field targetField = fields.get(startId + getDice());
         Pawn targetPawn = targetField.getPawn();
         boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
-        if (result && move) {
+        if (result && autoMove) {
             game.setOnMove(true);
             game.move(startField);
         }
@@ -124,15 +124,5 @@ public class Player {
 
     public void waitForMove() {
         game.setOnMove(true);
-    }
-
-    public boolean allPawnsEnd() {
-        boolean allPawnsEnd = true;
-        for (Field field : endFields) {
-            if (field.getPawn() == null) {
-                allPawnsEnd = false;
-            }
-        }
-        return allPawnsEnd;
     }
 }
