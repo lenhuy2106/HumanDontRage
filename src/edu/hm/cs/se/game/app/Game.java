@@ -26,6 +26,7 @@ import java.util.Observable;
  */
 public class Game extends Observable {
 
+    private static final int BOARD_SIZE = 40;
     /**
      * defines number of expected players
      */
@@ -126,7 +127,7 @@ public class Game extends Observable {
         boolean isSimpleField = fields.indexOf(field) != -1;
 
         if (isSimpleField && isOwnPawn) {
-            int nextId = fields.indexOf(field) + dice;
+            int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
             Field targetField = fields.get(nextId);
 
             // HERE
