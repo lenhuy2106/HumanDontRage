@@ -92,6 +92,9 @@ public class FieldView extends JPanel implements MouseListener {
         int[] y = { p1.y, p2.y, p3.y };
         if (fill) {
             g.fillPolygon(x, y, x.length);
+            g.setColor(Color.BLACK);
+            g2D.setStroke(new BasicStroke(1));
+            g.drawPolygon(x, y, x.length);
         } else {
             g2D.setStroke(new BasicStroke(2));
             g.drawPolygon(x, y, x.length);
@@ -114,7 +117,7 @@ public class FieldView extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent arg0) {
-        if (field.getPawn() != null && game.isOnMove()) {
+        if (field.getPawn() != null && game.getIndex() == field.getPawn().getIndex()) {
             game.move(field);
         }
     }
