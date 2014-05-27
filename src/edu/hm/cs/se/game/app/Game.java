@@ -131,7 +131,7 @@ public class Game extends Observable {
             Field targetField = fields.get(nextId);
 
             // HERE
-            if (targetField.getPawn() != null)
+//            if (targetField.getPawn() != null)
             targetField.setPawn(field.getPawn());
             field.setPawn(null);
 
