@@ -26,6 +26,7 @@ import java.util.Observable;
  */
 public class Game extends Observable {
 
+    public final static int BOARD_SIZE = 40;
     /**
      * defines number of expected players
      */
@@ -107,7 +108,7 @@ public class Game extends Observable {
      * @param fieldIndex: index of the field where pawn is situated.
      */
     public void move(int fieldIndex) {
-        Field field = fields.get(fieldIndex);
+        Field field = fields.get(fieldIndex % BOARD_SIZE);
         move(field);
     }
 
@@ -120,7 +121,7 @@ public class Game extends Observable {
     public void move(Field field) {
         boolean isSimpleField = fields.indexOf(field) != -1;
         if (isSimpleField && isOnMove) {
-            int nextId = fields.indexOf(field) + dice;
+            int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
             fields.get(nextId).setPawn(field.getPawn());
             field.setPawn(null);
             nextTurn();
