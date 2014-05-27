@@ -129,11 +129,18 @@ public class Game extends Observable {
         if (isSimpleField && isOwnPawn) {
             int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
             Field targetField = fields.get(nextId);
-
+            Pawn targetPawn = targetField.getPawn();
+            
             // HERE
-//            if (targetField.getPawn() != null)
-            targetField.setPawn(field.getPawn());
-            field.setPawn(null);
+            if(targetPawn == null){
+                targetField.setPawn(field.getPawn());
+                field.setPawn(null);
+            } else if(targetPawn.getIndex() != index){
+                players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
+                System.out.println("SEND HOME YO BITCH!");
+                targetField.setPawn(field.getPawn());
+                field.setPawn(null);                
+            }
 
             nextTurn();
             setOnMove(false);
