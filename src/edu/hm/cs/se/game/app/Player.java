@@ -138,15 +138,11 @@ public class Player {
 	}        
     }
     
-    public boolean occupiedQ(int index){
-        return endFields.get(index - 1) != null;
+    public boolean freeEnd(int index){
+        return endFields.get(index).getPawn() == null;
     }
     
     public void sendToEnd(int endID){
         endFields.get(endID - 1).setPawn(new Pawn(index));
-    }
-    
-    public Field getStart(){
-        return startField;
     }
 }
