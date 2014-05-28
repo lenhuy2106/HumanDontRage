@@ -123,33 +123,37 @@ public class Game extends Observable {
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
-        boolean isOwnPawn = index == field.getPawn().getIndex();
+        boolean isOwnPawn = field.getPawn() != null ? index == field.getPawn().getIndex() : false;
         boolean isSimpleField = fields.indexOf(field) != -1;
 
-        if (isSimpleField && isOwnPawn && isOnMove) {
-            Player currentPlayer = players.get(field.getPawn().getIndex()-1);
-            Field start = currentPlayer.getStart();
-            int endCap = start.getIndex() + 39;
-            int nextFieldNr = fields.indexOf(field)+dice;
+        if (isSimpleField && isOwnPawn) {
+            final Player currentPlayer = players.get(field.getPawn().getIndex()-1);
+            final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
+            final int endPos = fields.indexOf(field) - startCap + dice;
+                            System.err.println(startCap);
             
-            if(nextFieldNr > endCap && false){
-                int endPos = nextFieldNr - endCap;
-                if(endPos < 4){
-                    if(!currentPlayer.occupiedQ(endPos)){
+            // if index of startfield - currentfield + dice between 0 and 6. it can land on an endfield
+            if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice){
+                System.err.println("test");
+                if(endPos < 4 ){
+                    System.err.println("cmon just abit");
+                    if(currentPlayer.freeEnd(endPos)){
                         currentPlayer.sendToEnd(endPos);
-                        field.setPawn(null);
+                        field.setPawn(null);                                        // STILL DOESNT WORK
+                        System.err.println("'Infiltraded");
                     }
                 }
             }
             else {
-                int nextId = nextFieldNr % BOARD_SIZE;
+            // handling movement on field including sending back enemy pawns
+                int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
                 Field targetField = fields.get(nextId);
                 Pawn targetPawn = targetField.getPawn();
 
                 // HERE
                 if(targetPawn == null){
                     targetField.setPawn(field.getPawn());
-                    field.setPawn(null);
+                    field.setPawn(null);  
                 } else if(targetPawn.getIndex() != index){
                     players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
                     System.out.println("SEND HOME YO!");
@@ -185,27 +189,6 @@ public class Game extends Observable {
     }
 
     public void setOnMove(boolean onMove) {
-//        boolean canContinue = true;
-//        
-//        for (Field gamefield : fields) {
-//            if(gamefield.getPawn() != null) {
-//                if(gamefield.getPawn().getIndex() == index){
-//                    int checkId = (fields.indexOf(gamefield) + dice) % BOARD_SIZE;
-//
-//                    if( fields.get(checkId).getPawn() != null){
-//                        if( fields.get(checkId).getPawn().getIndex() == index){
-//
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        
-//        if(canContinue){
-//            isOnMove = onMove;
-//        }
         isOnMove = onMove;
         refresh();
     }
