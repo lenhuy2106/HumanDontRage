@@ -128,11 +128,10 @@ public class Player {
     
     public void sendBackHome(int fieldID){
 	for(Field field : homeFields) {
-            System.err.println("size of Homefields: " + homeFields.size());
             if(field.getPawn() == null){
 		Pawn pawn = new Pawn(index);
 		field.setPawn(pawn);
-                System.err.println("Pawn send Home, homefieldsize now: " + homeFields.size());
+                System.err.println("Pawn send Home");
                 fields.get(fieldID).setPawn(null);
                 break;
             }
