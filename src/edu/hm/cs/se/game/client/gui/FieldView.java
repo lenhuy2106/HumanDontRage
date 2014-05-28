@@ -117,7 +117,7 @@ public class FieldView extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent arg0) {
-        if (field.getPawn() != null && game.getIndex() == field.getPawn().getIndex() && game.isOnMove()) {
+        if (field.getPawn() != null && game.getIndex() == field.getPawn().getIndex()) {
             game.move(field);
         }
     }
