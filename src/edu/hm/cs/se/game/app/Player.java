@@ -137,4 +137,16 @@ public class Player {
             }
 	}        
     }
+    
+    public boolean occupiedQ(int index){
+        return endFields.get(index - 1) != null;
+    }
+    
+    public void sendToEnd(int index){
+        endFields.get(index - 1).setPawn(new Pawn(index));
+    }
+    
+    public Field getStart(){
+        return startField;
+    }
 }
