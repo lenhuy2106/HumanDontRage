@@ -58,7 +58,6 @@ public class Main extends JFrame {
                     frame.add(new DiceView(game), BorderLayout.NORTH);
                     frame.add(new BoardView(game, board), BorderLayout.CENTER);
                     frame.setVisible(true);
-                    System.out.println(game.toString());
 
                 } catch (Exception e) {
                     e.printStackTrace();
