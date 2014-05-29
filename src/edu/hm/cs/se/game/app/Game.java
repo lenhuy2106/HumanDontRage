@@ -88,9 +88,6 @@ public class Game extends Observable {
     public void roll() {
         dice = (int) ((Math.random()) * 6 + 1);
         roll(dice);
-
-        nextTurn();
-        refresh();
     }
 
     /**
