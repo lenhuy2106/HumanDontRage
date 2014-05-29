@@ -55,10 +55,6 @@ public class Game extends Observable {
      * indicates if player is on move (no roll)
      */
     private boolean isOnMove;
-    /**
-     * indicates if player can bash a victim pawn (choice)
-     */
-    private boolean isOnBashing;
 
     /**
      * Initializes a new game and selects the first player.
@@ -74,7 +70,7 @@ public class Game extends Observable {
             players.add(player);
         }
         index = 1;
-        turn = new Turn(players.get(index));
+        turn = new Turn(players.get(index-1));
         isOnMove = false;
     }
 
@@ -131,7 +127,7 @@ public class Game extends Observable {
             final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
             final int endPos = fields.indexOf(field) - startCap + dice;
                             System.err.println(startCap);
-            
+
             // if index of startfield - currentfield + dice between 0 and 6. it can land on an endfield
             if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice){
                 System.err.println("test");
@@ -153,16 +149,16 @@ public class Game extends Observable {
                 // HERE
                 if(targetPawn == null){
                     targetField.setPawn(field.getPawn());
-                    field.setPawn(null);  
+                    field.setPawn(null);
                 } else if(targetPawn.getIndex() != index){
                     players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
                     System.out.println("SEND HOME YO!");
                     targetField.setPawn(field.getPawn());
                     field.setPawn(null);
-                } 
+                }
             }
             nextTurn();
-            setOnMove(false); 
+            setOnMove(false);
         }
 
         refresh();
@@ -209,5 +205,37 @@ public class Game extends Observable {
             System.out.println("NEXT PLAYER: " + index);    // TEST
         }
         refresh();
+    }
+
+    public String moveToString() {
+        return isOnMove ? "m" : "r";
+    }
+
+    public String listToString(List <Field> list) {
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+
+        for (Field field : list) {
+            Pawn pawn = field.getPawn();
+            result.append(pawn == null ? "0" : pawn.getIndex()).
+                    append(",");
+        }
+        result.deleteCharAt(result.length()-1);
+        result.append("]");
+        return result.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder lists = new StringBuilder();
+        for (Player player : players) {
+            lists.append(player.homeToString());
+            lists.append(player.endToString());
+        }
+        return String.valueOf(index)
+                + moveToString()
+                + dice
+                + lists
+                + listToString(fields);
     }
 }

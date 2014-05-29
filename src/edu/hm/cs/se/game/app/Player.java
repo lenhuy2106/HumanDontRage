@@ -125,7 +125,7 @@ public class Player {
     public void waitForMove() {
         game.setOnMove(true);
     }
-    
+
     public void sendBackHome(int fieldID){
 	for(Field field : homeFields) {
             if(field.getPawn() == null){
@@ -135,14 +135,22 @@ public class Player {
                 fields.get(fieldID).setPawn(null);
                 break;
             }
-	}        
+	}
     }
-    
+
     public boolean freeEnd(int index){
         return endFields.get(index).getPawn() == null;
     }
-    
+
     public void sendToEnd(int endID){
         endFields.get(endID - 1).setPawn(new Pawn(index));
+    }
+
+    public String homeToString() {
+        return game.listToString(homeFields);
+    }
+
+    public String endToString() {
+        return game.listToString(endFields);
     }
 }

@@ -16,11 +16,15 @@ package edu.hm.cs.se.game.client.gui;
 import edu.hm.cs.se.game.app.Game;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 
 /**
  * Upper panel of the game view. Allows interaction of the player with the game.
@@ -62,7 +66,6 @@ public class DiceView extends JPanel implements Observer {
         this.game = game;
         this.game.addObserver(this);
 
-
         dice = new JLabel();
         add(dice);
 
@@ -80,6 +83,44 @@ public class DiceView extends JPanel implements Observer {
         player = new JPanel();
         player.setBackground(BoardView.colors[index]);
         add(player);
+
+        // SIMULATION BUTTON
+        JButton runRecord = new JButton("Run Record");
+        runRecord.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+
+                SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                    @Override
+                    public Void doInBackground() {
+                        try {
+                            BufferedReader reader = new BufferedReader(new FileReader("instructions.txt"));
+                            String next = reader.readLine();
+                            while(next != null) {
+                                String[] array = next.split(",");
+                                if(array[0].equals("roll"))
+                                    game.roll(Integer.parseInt(array[1]));
+                                else if(array[0].equals("move"))
+                                    game.move(Integer.parseInt(array[1]));
+                                publish();
+                                Thread.sleep(10);
+                                next = reader.readLine();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void process(List<Void> list) {
+                        game.refresh();
+                    }
+                };
+                worker.execute();
+            }
+        });
+        add(runRecord);
     }
 
     /**
