@@ -143,6 +143,6 @@ public class Player {
     }
     
     public void sendToEnd(int endID){
-        endFields.get(endID - 1).setPawn(new Pawn(index));
+        endFields.get(endID).setPawn(new Pawn(index));
     }
 }
