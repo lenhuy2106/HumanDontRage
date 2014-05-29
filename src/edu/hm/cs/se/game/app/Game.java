@@ -100,6 +100,9 @@ public class Game extends Observable {
      */
     public void roll(int number) {
         dice = number;
+
+        nextTurn();
+        refresh();
     }
 
     /**
@@ -146,7 +149,6 @@ public class Game extends Observable {
                 Field targetField = fields.get(nextId);
                 Pawn targetPawn = targetField.getPawn();
 
-                // HERE
                 if(targetPawn == null){
                     targetField.setPawn(field.getPawn());
                     field.setPawn(null);
@@ -160,11 +162,7 @@ public class Game extends Observable {
             nextTurn();
             setOnMove(false);
         }
-
         refresh();
-
-        System.out.println(fields.indexOf(field));          // TEST
-
     }
 
     /**
@@ -202,8 +200,8 @@ public class Game extends Observable {
         if (turn.progress()) {
             index = (index < 4) ? ++index : 1;
             turn = new Turn(players.get(index - 1));
-            System.out.println("NEXT PLAYER: " + index);    // TEST
         }
+        System.out.println(toString());
         refresh();
     }
 
@@ -218,8 +216,9 @@ public class Game extends Observable {
         for (Field field : list) {
             Pawn pawn = field.getPawn();
             result.append(pawn == null ? "0" : pawn.getIndex()).
-                    append(",");
+                    append(", ");
         }
+        result.deleteCharAt(result.length()-1);
         result.deleteCharAt(result.length()-1);
         result.append("]");
         return result.toString();

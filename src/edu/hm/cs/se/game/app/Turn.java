@@ -52,63 +52,48 @@ public class Turn {
         int dice = player.getDice();
         boolean nextPlayer = false;
 
-        System.out.println("============");
-        System.out.println("state:" + state);
-        System.out.println("attemptsLeft: " + attemptsLeft);
-        System.out.println("pawnsOnMove(): " + player.pawnsOnMove());
-
         switch (state) {
 
             case 1:
                 if (dice < 6) {
                     if (attemptsLeft > 1 && player.pawnsOnMove() == 0) {
-                        System.out.println("row 1");
-                        attemptsLeft--;                     // rule 1 - DONE
+                        attemptsLeft--;                     // rule 1
 
                     } else if (attemptsLeft == 1 && player.pawnsOnMove() == 0) {
-                        System.out.println("row 2");
-                                                            // rule 2 - DONE
-                        nextPlayer = true;
-                    } else if (player.pawnsOnMove() != 0) {
+                        nextPlayer = true;                  // rule 2
+
+                    } else if (player.pawnsOnMove() != 0) { // rule 7
                         player.waitForMove();
                         state = 3;
-                        System.out.println("row 7");        // rule 7 - DONE
                     }
                 } else if (dice == 6 && player.pawnsOnHome() != 0) {
-                    if  (attemptsLeft >= 1) {
-                        System.out.println("row 3");
-                        state = 2;                          // rule 3 - DONE
+                    if  (attemptsLeft >= 1) {               // rule 3
+                        state = 2;
                         player.start();
                         attemptsLeft++;
+
                     } else if (player.pawnsOnHome() == 0 && player.pawnsOnMove() != 0) {
-                        System.out.println("row 8");
-                        player.waitForMove();
-                        state = 3;                          // rule 8 - DONE
+                        player.waitForMove();               // rule 8
+                        state = 3;
                     }
                 }
                 break;
             case 2:
                 if (dice < 6 && player.startPawnMayMove(true)) {
-                        nextPlayer = true;
-                        System.out.println("row 4,6");
-                                                            // rule 4,6 - DONE
+                        nextPlayer = true;                  // rule 4,6
                         state = 1;
 
                 } else if (dice == 6 && player.startPawnMayMove(true)) {
-                        System.out.println("row 5");
-                        state = 1;                          // rule 5 - DONE
+                        state = 1;                          // rule 5
                 }
                 break;
             case 3:
-                if (player.pawnsOnEnd() == 4) {
-                    System.out.println("row 10");
-                                                            // rule 10
-                    System.out.println("DA WIN");           // TODO: end message
+                if (player.pawnsOnEnd() == 4) {             // rule 10
                     windowDude();
                     System.exit(0);
-                } else {
-                    System.out.println("row 9");
-                    nextPlayer = true;                      // rule 9 - DONE
+
+                } else {                                    // rule 9
+                    nextPlayer = true;
                 }
                 break;
             default:
@@ -116,18 +101,18 @@ public class Turn {
         }
         return nextPlayer;
     }
-    
+
         private void windowDude(){
         //1. Create the frame.
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
-        
+
         //Winner-Announcement
         JLabel label = new JLabel("PLAYER " + player.getID());
         label.setHorizontalAlignment(JLabel.CENTER);
-        
+
         //Buttons
-        JButton exit = new JButton("Exit");    
+        JButton exit = new JButton("Exit");
         exit.addActionListener(new ActionListener() {
 
             @Override
