@@ -8,6 +8,14 @@
  */
 package edu.hm.cs.se.game.app;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 /**
  *
  * @author Nhu Huy Le - nle@hm.edu
@@ -96,6 +104,7 @@ public class Turn {
                     System.out.println("row 10");
                                                             // rule 10
                     System.out.println("DA WIN");           // TODO: end message
+                    windowDude();
                     System.exit(0);
                 } else {
                     System.out.println("row 9");
@@ -106,5 +115,37 @@ public class Turn {
                 break;
         }
         return nextPlayer;
+    }
+    
+        private void windowDude(){
+        //1. Create the frame.
+        JFrame frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        
+        //Winner-Announcement
+        JLabel label = new JLabel("PLAYER " + player.getID());
+        label.setHorizontalAlignment(JLabel.CENTER);
+        
+        //Buttons
+        JButton exit = new JButton("Exit");    
+        exit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        //Adding to JFrame
+        frame.add(label,BorderLayout.CENTER);
+        frame.add(exit,BorderLayout.SOUTH);
+
+        // JFrame properties
+        frame.setSize(300, 150);
+        frame.setBackground(Color.BLACK);
+        frame.setTitle("AND THE WINNER IS");
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
