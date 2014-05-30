@@ -111,10 +111,7 @@ public class Player {
     }
 
     public boolean startPawnMayMove(boolean autoMove) {
-        int startId = (index - 1) * 10;
-        Field targetField = fields.get(startId + getDice());
-        Pawn targetPawn = targetField.getPawn();
-        boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
+        boolean result = canMoveStart();
         if (result && autoMove) {
             game.setOnMove(true);
             game.move(startField);
@@ -122,6 +119,14 @@ public class Player {
         return result;
     }
 
+    public boolean canMoveStart(){
+        int startId = (index - 1) * 10;
+        Field targetField = fields.get(startId + getDice());
+        Pawn targetPawn = targetField.getPawn();
+        boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
+        return result;        
+    }
+    
     public void waitForMove() {
         game.setOnMove(true);
     }
