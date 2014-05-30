@@ -71,19 +71,20 @@ public class Turn {
                         state = 2;
                         player.start();
                         attemptsLeft++;
-
-                    } else if (player.pawnsOnHome() == 0 && player.pawnsOnMove() != 0) {
+                    }
+                } else if (player.pawnsOnHome() == 0 && player.pawnsOnMove() != 0) {
                         player.waitForMove();               // rule 8
                         state = 3;
                     }
-                }
                 break;
             case 2:
-                if (dice < 6 && player.startPawnMayMove(true)) {
+                if (dice < 6 && player.canMoveStart()) {
+                        player.startPawnMayMove(true);   
                         nextPlayer = true;                  // rule 4,6
                         state = 1;
 
-                } else if (dice == 6 && player.startPawnMayMove(true)) {
+                } else if (dice == 6 && player.canMoveStart()) {
+                        player.startPawnMayMove(true);    
                         state = 1;                          // rule 5
                 }
                 break;
@@ -102,7 +103,11 @@ public class Turn {
         return nextPlayer;
     }
 
-        private void windowDude(){
+    public boolean canMoveStart(){
+        return player.canMoveStart();
+    }
+    
+    private void windowDude(){
         //1. Create the frame.
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
