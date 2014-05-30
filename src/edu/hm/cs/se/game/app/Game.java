@@ -151,7 +151,7 @@ public class Game extends Observable {
                     field.setPawn(null);
                 } else if(targetPawn.getIndex() != index){
                     players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
-                    System.out.println("SEND HOME YO!");
+                    System.err.println("SEND HOME YO!");
                     targetField.setPawn(field.getPawn());
                     field.setPawn(null);
                 }
