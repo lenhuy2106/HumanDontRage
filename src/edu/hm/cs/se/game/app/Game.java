@@ -6,8 +6,8 @@
  * This program is created while attending the courses
  * at Hochschule Muenchen Fak07, Germany in SS14.
 
-SE2: Praktikum
-Excercise 2 - HumanDontRage
+ SE2: Praktikum
+ Excercise 2 - HumanDontRage
 
  - 20/5/2014
  */
@@ -76,6 +76,7 @@ public class Game extends Observable {
 
     /**
      * Get current player index on turn.
+     *
      * @return current player index
      */
     public int getIndex() {
@@ -126,7 +127,7 @@ public class Game extends Observable {
             final Player currentPlayer = players.get(field.getPawn().getIndex()-1);
             final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
             final int endPos = fields.indexOf(field) - startCap + dice;
-                            System.err.println(startCap);
+            System.err.println(startCap);
 
             // if index of startfield - currentfield + dice between 0 and 6. it can land on an endfield
             if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice){
@@ -141,7 +142,7 @@ public class Game extends Observable {
                 }
             }
             else {
-            // handling movement on field including sending back enemy pawns
+                // handling movement on field including sending back enemy pawns
                 int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
                 Field targetField = fields.get(nextId);
                 Pawn targetPawn = targetField.getPawn();
@@ -194,9 +195,14 @@ public class Game extends Observable {
     }
 
     private void nextTurn() {
-        if (turn.progress()) {
-            index = (index < 4) ? ++index : 1;
-            turn = new Turn(players.get(index - 1));
+        if (players.get(index - 1).pawnsCanMove()) {
+            if (turn.progress()) {
+                index = (index < 4) ? ++index : 1;
+                turn = new Turn(players.get(index - 1));
+            }
+        } else {
+                index = (index < 4) ? ++index : 1;
+                turn = new Turn(players.get(index - 1));
         }
         System.out.println(toString());
         refresh();
@@ -206,7 +212,7 @@ public class Game extends Observable {
         return isOnMove ? "m" : "r";
     }
 
-    public String listToString(List <Field> list) {
+    public String listToString(List<Field> list) {
         StringBuilder result = new StringBuilder();
         result.append("[");
 
