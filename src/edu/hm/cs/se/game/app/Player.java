@@ -6,8 +6,8 @@
  * This program is created while attending the courses
  * at Hochschule Muenchen Fak07, Germany in SS14.
 
-SE2: Praktikum
-Excercise 2 - HumanDontRage
+ SE2: Praktikum
+ Excercise 2 - HumanDontRage
 
  - 20/5/2014
  */
@@ -45,23 +45,24 @@ public class Player {
 
     /**
      * initializes a new player.
+     *
      * @param index: index that represents color of the player (0 < index <= 4).
      * @param fields: player independent game fields
      * @param game: reference to the game
      */
     public Player(int index, GameBoard board, Game game) {
 
-	this.index = index;
-	this.game = game;
-	this.fields = board.getFields();
+        this.index = index;
+        this.game = game;
+        this.fields = board.getFields();
 	this.homeFields = board.getHomes(index-1);
 	this.endFields = board.getEnds(index-1);
         this.startField = fields.get((index - 1) * 10);
 
 	for(Field field : homeFields) {
-		Pawn pawn = new Pawn(index);
-		field.setPawn(pawn);
-	}
+            Pawn pawn = new Pawn(index);
+            field.setPawn(pawn);
+        }
     }
 
     /**
@@ -81,6 +82,7 @@ public class Player {
 
     /**
      * Number of pawns moving on simple fields.
+     *
      * @return number of pawns moving.
      */
     public int pawnsOnMove() {
@@ -88,6 +90,29 @@ public class Player {
 
         pawnsOnMove -= (pawnsOnHome() + pawnsOnEnd());
         return pawnsOnMove;
+    }
+
+    public boolean pawnsCanMove() {
+        boolean canMove = true;
+
+        for (Field currentfield : fields) {
+            if (currentfield.getPawn() != null) {
+                if (currentfield.getPawn().getIndex() == index) {
+                    if (fields.get(currentfield.getIndex() + getDice()).getIndex() == index) {
+                        canMove = false;
+                        break;
+                    } else if (targetEndField(currentfield)) {
+                        final int startCap = (currentfield.getPawn().getIndex() - 1 == 0) ? fields.size() : (currentfield.getPawn().getIndex() - 1) * 10;
+                        final int endPos = fields.indexOf(currentfield) - startCap + getDice();
+                        if (!freeEnd(endPos)) {
+                            canMove = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return canMove;
     }
 
     public int pawnsOnHome() {
@@ -124,9 +149,9 @@ public class Player {
         Field targetField = fields.get(startId + getDice());
         Pawn targetPawn = targetField.getPawn();
         boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
-        return result;        
+        return result;
     }
-    
+
     public void waitForMove() {
         game.setOnMove(true);
     }
@@ -134,24 +159,44 @@ public class Player {
     public void sendBackHome(int fieldID){
 	for(Field field : homeFields) {
             if(field.getPawn() == null){
-		Pawn pawn = new Pawn(index);
-		field.setPawn(pawn);
+                Pawn pawn = new Pawn(index);
+                field.setPawn(pawn);
                 System.err.println("Pawn send Home");
                 fields.get(fieldID).setPawn(null);
                 break;
             }
-	}
+        }
     }
 
-    public boolean freeEnd(int index){
+    public boolean targetEndField(Field field) {
+        boolean isEnd = false;
+        final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
+        final int endPos = fields.indexOf(field) - startCap + getDice();
+        if (startCap > fields.indexOf(field) && startCap <= fields.indexOf(field) + getDice()) {
+            if (endPos < 4) {
+                isEnd = true;
+            }
+        }
+        return isEnd;
+    }
+
+    public boolean freeEnd(int index) {
         return endFields.get(index).getPawn() == null;
     }
 
-    public void sendToEnd(int endID){
+    public boolean freeStart() {
+        return startField.getPawn() == null;
+    }
+
+    public boolean ownPawnOnStart() {
+        return startField.getPawn() != null ? startField.getPawn().getIndex() == index : false;
+    }
+
+    public void sendToEnd(int endID) {
         endFields.get(endID).setPawn(new Pawn(index));
     }
-    
-    public int getID(){
+
+    public int getID() {
         return index;
     }
 
