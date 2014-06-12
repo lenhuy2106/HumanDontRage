@@ -66,26 +66,28 @@ public class Turn {
                         player.waitForMove();
                         state = 3;
                     }
-                } else if (dice == 6 && player.pawnsOnHome() != 0) {
-                    if  (attemptsLeft >= 1) {               // rule 3
+                } else if (dice == 6 && player.pawnsOnHome() != 0 && player.freeStart()) {
+                        if  (attemptsLeft >= 1) {               // rule 3
                         state = 2;
                         player.start();
                         attemptsLeft++;
-                    }
+                        }
                 } else if (player.pawnsOnHome() == 0 && player.pawnsOnMove() != 0) {
                         player.waitForMove();               // rule 8
                         state = 3;
-                    }
+                }
                 break;
             case 2:
-                if (dice < 6 && player.canMoveStart()) {
-                        player.startPawnMayMove(true);   
-                        nextPlayer = true;                  // rule 4,6
-                        state = 1;
+                if(player.ownPawnOnStart()){
+                    if (dice < 6 && player.canMoveStart()) {
+                            player.startPawnMayMove(true);   
+                            nextPlayer = true;                  // rule 4,6
+                            state = 1;
 
-                } else if (dice == 6 && player.canMoveStart()) {
-                        player.startPawnMayMove(true);    
-                        state = 1;                          // rule 5
+                    } else if (dice == 6 && player.canMoveStart()) {
+                            player.startPawnMayMove(true);    
+                            state = 1;                          // rule 5
+                    }
                 }
                 break;
             case 3:
