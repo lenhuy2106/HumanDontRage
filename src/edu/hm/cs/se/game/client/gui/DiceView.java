@@ -76,7 +76,6 @@ public class DiceView extends JPanel implements Observer {
             public void actionPerformed(ActionEvent arg0) {
                 game.roll();
             }
-
         });
         add(button);
 
