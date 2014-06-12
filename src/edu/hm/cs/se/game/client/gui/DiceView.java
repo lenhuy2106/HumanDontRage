@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -57,6 +58,9 @@ public class DiceView extends JPanel implements Observer {
      */
     private int index = 1;
 
+    	/** reader for example game */
+	private BufferedReader reader;
+
     /**
      * Custom-Constructor. Initializes the panel and its components.
      *
@@ -93,18 +97,19 @@ public class DiceView extends JPanel implements Observer {
                     @Override
                     public Void doInBackground() {
                         try {
-                            BufferedReader reader = new BufferedReader(new FileReader("instructions.txt"));
-                            String next = reader.readLine();
-                            while(next != null) {
-                                String[] array = next.split(",");
-                                if(array[0].equals("roll"))
-                                    game.roll(Integer.parseInt(array[1]));
-                                else if(array[0].equals("move"))
-                                    game.move(Integer.parseInt(array[1]));
-                                publish();
-                                Thread.sleep(10);
-                                next = reader.readLine();
-                            }
+                            play();
+//                            BufferedReader reader = new BufferedReader(new FileReader("instructions.txt"));
+//                            String next = reader.readLine();
+//                            while(next != null) {
+//                                String[] array = next.split(",");
+//                                if(array[0].equals("roll"))
+//                                    game.roll(Integer.parseInt(array[1]));
+//                                else if(array[0].equals("move"))
+//                                    game.move(Integer.parseInt(array[1]));
+//                                publish();
+//                                Thread.sleep(10);
+//                                next = reader.readLine();
+//                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -121,6 +126,50 @@ public class DiceView extends JPanel implements Observer {
         });
         add(runRecord);
     }
+
+    	/**
+	 * compare line by line the state of the game with the state of the
+	 * example game.
+	 */
+	public void play() throws InterruptedException {
+		try (BufferedReader reader = new BufferedReader(new FileReader("instructions.txt"))) {
+			String next = reader.readLine();
+			while(next != null) {
+				String[] array = next.split(",");
+				if(array[0].equals("roll"))
+					game.roll(Integer.parseInt(array[1]));
+				else if(array[0].equals("move"))
+					game.move(Integer.parseInt(array[1]));
+				next = reader.readLine();
+
+				if (!compareString().equals(game.toString())) {
+                                    System.err.println("ERROR ========= ");
+                                    System.err.println(compareString());
+                                    System.err.println(game.toString());
+                                    Thread.sleep(999999999);
+                                }
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * read next line of string representation of the example game state model.
+	 * @return next state of the game
+	 */
+	public String compareString() {
+		String result = null;
+		try{
+			if(reader == null)
+				reader = new BufferedReader(new FileReader("example_game.txt"));
+			result = reader.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
     /**
      * update dice, current player and next move on the user interface.

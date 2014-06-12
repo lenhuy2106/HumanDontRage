@@ -149,6 +149,7 @@ public class Player {
         Field targetField = fields.get(startId + getDice());
         Pawn targetPawn = targetField.getPawn();
         boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
+        System.out.println(result);
         return result;
     }
 
@@ -161,7 +162,7 @@ public class Player {
             if(field.getPawn() == null){
                 Pawn pawn = new Pawn(index);
                 field.setPawn(pawn);
-                System.err.println("Pawn send Home");
+//                System.err.println("Pawn send Home");
                 fields.get(fieldID).setPawn(null);
                 break;
             }
@@ -189,7 +190,8 @@ public class Player {
     }
 
     public boolean ownPawnOnStart() {
-        return startField.getPawn() != null ? startField.getPawn().getIndex() == index : false;
+        boolean result = startField.getPawn() != null ? startField.getPawn().getIndex() == index : false;
+        return result;
     }
 
     public void sendToEnd(int endID) {

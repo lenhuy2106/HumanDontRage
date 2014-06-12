@@ -127,17 +127,17 @@ public class Game extends Observable {
             final Player currentPlayer = players.get(field.getPawn().getIndex()-1);
             final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
             final int endPos = fields.indexOf(field) - startCap + dice;
-            System.err.println(startCap);
+//            System.err.println(startCap);
 
             // if index of startfield - currentfield + dice between 0 and 6. it can land on an endfield
             if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice){
-                System.err.println("test");
+//                System.err.println("test");
                 if(endPos < 4 ){
-                    System.err.println("cmon just abit");
+//                    System.err.println("cmon just abit");
                     if(currentPlayer.freeEnd(endPos)){
                         currentPlayer.sendToEnd(endPos);
                         field.setPawn(null);                                        // STILL DOESNT WORK
-                        System.err.println("'Infiltraded");
+//                        System.err.println("'Infiltraded");
                     }
                 }
             }
@@ -152,7 +152,7 @@ public class Game extends Observable {
                     field.setPawn(null);
                 } else if(targetPawn.getIndex() != index){
                     players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
-                    System.err.println("SEND HOME YO!");
+//                    System.err.println("SEND HOME YO!");
                     targetField.setPawn(field.getPawn());
                     field.setPawn(null);
                 }
@@ -195,19 +195,22 @@ public class Game extends Observable {
     }
 
     private void nextTurn() {
-        if(!players.get(index-1).canMoveStart()){
-                index = (index < 4) ? ++index : 1;
-                turn = new Turn(players.get(index - 1));            
-        }
-        else if (players.get(index - 1).pawnsCanMove()) {
+//        if(!players.get(index-1).canMoveStart()){
+//                index = (index < 4) ? ++index : 1;
+////                turn = new Turn(players.get(index - 1));
+//        }
+//        else
+//            if (players.get(index - 1).pawnsCanMove()) {
             if (turn.progress()) {
-                index = (index < 4) ? ++index : 1;
-                turn = new Turn(players.get(index - 1));
+//                if(!players.get(index-1).canMoveStart() && players.get(index - 1).pawnsCanMove()) {
+                    index = (index < 4) ? ++index : 1;
+                    turn = new Turn(players.get(index - 1));
+//                }
             }
-        } else {
-                index = (index < 4) ? ++index : 1;
-                turn = new Turn(players.get(index - 1));
-        }
+//        } else {
+//                index = (index < 4) ? ++index : 1;
+//                turn = new Turn(players.get(index - 1));
+//        }
         System.out.println(toString());
         refresh();
     }

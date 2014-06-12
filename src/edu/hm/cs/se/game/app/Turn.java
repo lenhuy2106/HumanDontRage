@@ -75,22 +75,31 @@ public class Turn {
                 } else if (player.pawnsOnHome() == 0 && player.pawnsOnMove() != 0) {
                         player.waitForMove();               // rule 8
                         state = 3;
+                } else {
+                    System.err.println("UNHANDLED STATE 1");
                 }
                 break;
             case 2:
-                if(player.ownPawnOnStart() && player.canMoveStart()){
+                if (player.ownPawnOnStart() && player.canMoveStart()) {
                     if (dice < 6 && player.canMoveStart()) {
-                            player.startPawnMayMove(true);   
                             nextPlayer = true;                  // rule 4,6
                             state = 1;
+                            if (!player.startPawnMayMove(true)) {
+                                System.out.println("BREAK");
+                            }
 
                     } else if (dice == 6 && player.canMoveStart()) {
-                            player.startPawnMayMove(true);    
-                            state = 1;                          // rule 5
+                            player.startPawnMayMove(true);
+                            state = 1;
+                                                                // rule 5
                     }
-                } else if (!player.canMoveStart()){
-                        nextPlayer = true;
-                        state = 1;
+                }
+                else if (player.ownPawnOnStart() && !player.canMoveStart()) {
+                    System.out.println("STATE ERROR");
+                    nextPlayer = true;
+                }
+                else {
+                    System.err.println("UNHANDLED STATE 2");
                 }
                 break;
             case 3:
@@ -111,7 +120,7 @@ public class Turn {
     public boolean canMoveStart(){
         return player.canMoveStart();
     }
-    
+
     private void windowDude(){
         //1. Create the frame.
         JFrame frame = new JFrame();
