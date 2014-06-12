@@ -88,7 +88,7 @@ public class Turn {
                             player.startPawnMayMove(true);    
                             state = 1;                          // rule 5
                     }
-                } else if (!player.canMoveStart()){
+                } else if (player.ownPawnOnStart() && !player.canMoveStart()){
                         nextPlayer = true;
                         state = 1;
                 }
