@@ -78,7 +78,7 @@ public class Turn {
                 }
                 break;
             case 2:
-                if(player.ownPawnOnStart()){
+                if(player.ownPawnOnStart() && player.canMoveStart()){
                     if (dice < 6 && player.canMoveStart()) {
                             player.startPawnMayMove(true);   
                             nextPlayer = true;                  // rule 4,6
@@ -88,6 +88,9 @@ public class Turn {
                             player.startPawnMayMove(true);    
                             state = 1;                          // rule 5
                     }
+                } else if (!player.canMoveStart()){
+                        nextPlayer = true;
+                        state = 1;
                 }
                 break;
             case 3:

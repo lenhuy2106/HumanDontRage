@@ -195,7 +195,11 @@ public class Game extends Observable {
     }
 
     private void nextTurn() {
-        if (players.get(index - 1).pawnsCanMove()) {
+        if(!players.get(index-1).canMoveStart()){
+                index = (index < 4) ? ++index : 1;
+                turn = new Turn(players.get(index - 1));            
+        }
+        else if (players.get(index - 1).pawnsCanMove()) {
             if (turn.progress()) {
                 index = (index < 4) ? ++index : 1;
                 turn = new Turn(players.get(index - 1));
