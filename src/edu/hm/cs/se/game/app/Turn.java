@@ -80,11 +80,12 @@ public class Turn {
                 break;
             case 2:
                 if (dice < 6 && player.startPawnMayMove(true)) {
-                        nextPlayer = true;                  // rule 4,6
-                        state = 1;
+                    nextPlayer = true;                  // rule 4,6
+                    state = 1;
+                    System.err.println("QFAEFAEGAEGEAG");
 
                 } else if (dice == 6 && player.startPawnMayMove(true)) {
-                        state = 1;                          // rule 5
+                    state = 1;                          // rule 5
                 }
                 break;
             case 3:
