@@ -235,7 +235,7 @@ public class Player {
         }
         return isEnd;
     }
-    
+
     /**
      * Checks if the targetField exceeds the range of the normal field.
      * Includes endFields and shooting over them.
@@ -252,6 +252,7 @@ public class Player {
             }
         }
         return exceeded;        
+        return exceeded;
     }
 
     /**
@@ -286,5 +287,9 @@ public class Player {
 
     public String endToString() {
         return game.listToString(endFields);
+    }
+
+    public void finished() {
+        game.setFinished(true);
     }
 }

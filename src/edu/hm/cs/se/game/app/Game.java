@@ -56,6 +56,8 @@ public class Game extends Observable {
      */
     private boolean isOnMove;
 
+    private boolean finished;
+
     /**
      * Initializes a new game and selects the first player.
      *
@@ -72,6 +74,7 @@ public class Game extends Observable {
         index = 1;
         turn = new Turn(players.get(index-1));
         isOnMove = false;
+        finished = false;
     }
 
     /**
@@ -81,6 +84,14 @@ public class Game extends Observable {
      */
     public int getIndex() {
         return index;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public List<Player> getPlayers() {
@@ -226,7 +237,11 @@ public class Game extends Observable {
     }
 
     public String moveToString() {
-        return isOnMove ? "m" : "r";
+        String result;
+        if (finished) {
+            result = "f";
+        } else result = isOnMove ? "m" : "r";
+        return result;
     }
 
     public String listToString(List<Field> list) {
