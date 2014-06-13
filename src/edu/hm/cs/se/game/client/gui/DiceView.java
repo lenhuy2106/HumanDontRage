@@ -97,19 +97,19 @@ public class DiceView extends JPanel implements Observer {
                     @Override
                     public Void doInBackground() {
                         try {
-                            play();
-//                            BufferedReader reader = new BufferedReader(new FileReader("instructions.txt"));
-//                            String next = reader.readLine();
-//                            while(next != null) {
-//                                String[] array = next.split(",");
-//                                if(array[0].equals("roll"))
-//                                    game.roll(Integer.parseInt(array[1]));
-//                                else if(array[0].equals("move"))
-//                                    game.move(Integer.parseInt(array[1]));
-//                                publish();
-//                                Thread.sleep(10);
-//                                next = reader.readLine();
-//                            }
+//                            play();
+                            BufferedReader reader = new BufferedReader(new FileReader("instructions.txt"));
+                            String next = reader.readLine();
+                            while(next != null) {
+                                String[] array = next.split(",");
+                                if(array[0].equals("roll"))
+                                    game.roll(Integer.parseInt(array[1]));
+                                else if(array[0].equals("move"))
+                                    game.move(Integer.parseInt(array[1]));
+                                publish();
+                                Thread.sleep(10);
+                                next = reader.readLine();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -145,7 +145,7 @@ public class DiceView extends JPanel implements Observer {
 				if (!compareString().equals(game.toString())) {
                                     System.out.println("ERROR ========= ");
                                     System.out.println("ACTUAL \n" + game.toString());
-                                    Thread.sleep(999999999);
+//                                    Thread.sleep(999999999);
                                 }
                                 System.out.println(game.toString());
 			}
