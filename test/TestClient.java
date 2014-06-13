@@ -32,6 +32,7 @@ public class TestClient {
 
 	/** game under test */
 	private Game game;
+        private int i = 1;
 
 	/** reader for example game */
 	private BufferedReader reader;
@@ -58,6 +59,8 @@ public class TestClient {
 					game.move(Integer.parseInt(array[1]));
 				next = reader.readLine();
 				Assert.assertEquals("Strings should be equal", compareString(), game.toString());
+                                System.out.println(i++ + "  " + game.toString());
+
 			}
 			reader.close();
 		} catch (IOException e) {
@@ -71,7 +74,7 @@ public class TestClient {
 	 */
 	public String compareString() {
 		String result = null;
-		try{
+		try {
 			if(reader == null)
 				reader = new BufferedReader(new FileReader("example_game.txt"));
 			result = reader.readLine();
