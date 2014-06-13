@@ -53,18 +53,27 @@ public class Turn {
         boolean nextPlayer = false;
 
         switch (state) {
-
             case 1:
-                if (dice < 6) {
-                    if (attemptsLeft > 1 && player.pawnsOnMove() == 0) {
+                if (player.ownPawnOnStart() && !player.canMoveStart()) {
+                    nextPlayer = true;                          // extra rule
+                } else if (dice < 6) {
+                    if (attemptsLeft > 1 && !player.pawnsCanMove()) {
                         attemptsLeft--;                     // rule 1
 
-                    } else if (attemptsLeft == 1 && player.pawnsOnMove() == 0) {
+                    } else if (attemptsLeft == 1 && !player.pawnsCanMove()) {
                         nextPlayer = true;                  // rule 2
 
-                    } else if (player.pawnsOnMove() != 0) { // rule 7
-                        player.waitForMove();
-                        state = 3;
+                    } else if (player.pawnsOnMove() != 0 && !player.ownPawnOnStart()) { // rule 7
+                        if (player.pawnsCanMove()) {
+                            System.out.println("HERE");
+                            player.onMove();
+                            state = 3;
+                        } else {
+                            attemptsLeft--;
+                        }
+                    } else {
+                        player.startPawnMayMove(true);
+                        nextPlayer = true;
                     }
                 } else if (dice == 6 && player.pawnsOnHome() != 0 && player.freeStart()) {
                         if  (attemptsLeft >= 1) {               // rule 3
@@ -73,9 +82,18 @@ public class Turn {
                         attemptsLeft++;
                         }
                 } else if (player.pawnsOnHome() == 0 && player.pawnsOnMove() != 0) {
-                        player.waitForMove();               // rule 8
+                        player.onMove();               // rule 8
                         state = 3;
+                } else if (dice == 6 && player.pawnsOnHome() != 0 && !player.freeStart()) {
+                        state = 4;
+                        if (!player.start()) {
+                            player.startPawnMayMove(true);
+                        }
+
+//                } else if (dice == 6 && player.pawnsOnHome() != 0 && !player.freeStart()) {
+
                 } else {
+                    System.out.println("HERE");
                     System.err.println("UNHANDLED STATE 1");
                 }
                 break;
@@ -95,8 +113,7 @@ public class Turn {
                     }
                 }
                 else if (player.ownPawnOnStart() && !player.canMoveStart()) {
-                    System.out.println("STATE ERROR");
-                    nextPlayer = true;
+                    nextPlayer = true;                          // extra rule
                 }
                 else {
                     System.err.println("UNHANDLED STATE 2");
@@ -107,9 +124,21 @@ public class Turn {
                     windowDude();
                     System.exit(0);
 
-                } else {                                    // rule 9
+                } else if (dice == 6) {
+                    state = 1;
+                } else {         // rule 9
                     nextPlayer = true;
                 }
+                break;
+            case 4:                                         // extra rule
+                if (dice < 6 && player.canMoveStart()) {
+                    nextPlayer = true;
+                    state = 1;
+                    if (!player.startPawnMayMove(true)) {
+                        System.out.println("BREAK");
+                    }
+                }
+                state = 1;
                 break;
             default:
                 break;

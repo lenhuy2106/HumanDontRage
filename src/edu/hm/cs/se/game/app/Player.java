@@ -68,8 +68,12 @@ public class Player {
     /**
      * Moves a pawn from player homefield to player startfield.
      */
-    public void start() {
-        if (startField.getPawn() == null) {
+    public boolean start() {
+
+        boolean result = true;
+        Pawn startPawn = startField.getPawn();
+
+        if (startPawn == null) {
             for (Field field : homeFields) {
                 if (field.getPawn() != null) {
                     startField.setPawn(field.getPawn());
@@ -77,7 +81,20 @@ public class Player {
                     break;
                 }
             }
+            // if startField is occupied by other player's pawn
+        } else if (startPawn.getIndex() != index) {
+            game.getPlayers().get(startPawn.getIndex()-1).sendBackHome(fields.indexOf(startField));
+            for (Field field : homeFields) {
+                if (field.getPawn() != null) {
+                    startField.setPawn(field.getPawn());
+                    field.setPawn(null);
+                    break;
+                }
+            }
+        } else {
+            result = false;
         }
+        return result;
     }
 
     /**
@@ -93,21 +110,21 @@ public class Player {
     }
 
     public boolean pawnsCanMove() {
-        boolean canMove = true;
+        boolean canMove = false;
 
-        for (Field currentfield : fields) {
-            if (currentfield.getPawn() != null) {
-                if (currentfield.getPawn().getIndex() == index) {
-                    if (fields.get(currentfield.getIndex() + getDice()).getIndex() == index) {
-                        canMove = false;
-                        break;
-                    } else if (targetEndField(currentfield)) {
-                        final int startCap = (currentfield.getPawn().getIndex() - 1 == 0) ? fields.size() : (currentfield.getPawn().getIndex() - 1) * 10;
-                        final int endPos = fields.indexOf(currentfield) - startCap + getDice();
-                        if (!freeEnd(endPos)) {
-                            canMove = false;
+        for (Field field : fields) {
+            if (field.getPawn() != null) {
+                if (field.getPawn().getIndex() == index) {
+                    if (targetEndField(field)) {
+                        final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
+                        final int endPos = fields.indexOf(field) - startCap + getDice();
+                        if (freeEnd(endPos)) {
+                            canMove = true;
                             break;
                         }
+                    } else if (fields.get(field.getIndex() + getDice()).getIndex() != index) {
+                        canMove = true;
+                        break;
                     }
                 }
             }
@@ -149,11 +166,10 @@ public class Player {
         Field targetField = fields.get(startId + getDice());
         Pawn targetPawn = targetField.getPawn();
         boolean result = (targetPawn == null) ? true : targetPawn.getIndex() != index;
-        System.out.println(result);
         return result;
     }
 
-    public void waitForMove() {
+    public void onMove() {
         game.setOnMove(true);
     }
 

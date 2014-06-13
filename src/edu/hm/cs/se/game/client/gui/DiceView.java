@@ -144,10 +144,10 @@ public class DiceView extends JPanel implements Observer {
 
 				if (!compareString().equals(game.toString())) {
                                     System.out.println("ERROR ========= ");
-                                    System.out.println("SHOULD " + compareString());
-                                    System.out.println("ACTUAL " + game.toString());
+                                    System.out.println("ACTUAL \n" + game.toString());
                                     Thread.sleep(999999999);
                                 }
+                                System.out.println(game.toString());
 			}
 			reader.close();
 		} catch (IOException e) {

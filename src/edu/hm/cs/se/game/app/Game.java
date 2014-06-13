@@ -83,6 +83,10 @@ public class Game extends Observable {
         return index;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     /**
      * roll a random number between 1 and 6.
      */
@@ -122,15 +126,25 @@ public class Game extends Observable {
     public void move(Field field) {
         boolean isOwnPawn = field.getPawn() != null ? index == field.getPawn().getIndex() : false;
         boolean isSimpleField = fields.indexOf(field) != -1;
+        int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
+        Field targetField = fields.get(nextId);
+        Pawn targetPawn = targetField.getPawn();
+        boolean freeTarget = targetPawn != null ?
+                targetPawn.getIndex() != index : true;
 
-        if (isSimpleField && isOwnPawn) {
-            final Player currentPlayer = players.get(field.getPawn().getIndex()-1);
-            final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
-            final int endPos = fields.indexOf(field) - startCap + dice;
+        final Player currentPlayer = players.get(field.getPawn().getIndex()-1);
+        final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
+        final int endPos = fields.indexOf(field) - startCap + dice;
+
+        freeTarget &= (endPos < 4 && startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice) ?
+                currentPlayer.freeEnd(endPos) : true;
+
+        if (isSimpleField && isOwnPawn && isOnMove && freeTarget) {
+
 //            System.err.println(startCap);
 
             // if index of startfield - currentfield + dice between 0 and 6. it can land on an endfield
-            if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice){
+            if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice) {
 //                System.err.println("test");
                 if(endPos < 4 ){
 //                    System.err.println("cmon just abit");
@@ -143,14 +157,10 @@ public class Game extends Observable {
             }
             else {
                 // handling movement on field including sending back enemy pawns
-                int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
-                Field targetField = fields.get(nextId);
-                Pawn targetPawn = targetField.getPawn();
-
-                if(targetPawn == null){
+                if(targetPawn == null) {
                     targetField.setPawn(field.getPawn());
                     field.setPawn(null);
-                } else if(targetPawn.getIndex() != index){
+                } else if(targetPawn.getIndex() != index) {
                     players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
 //                    System.err.println("SEND HOME YO!");
                     targetField.setPawn(field.getPawn());
@@ -211,7 +221,6 @@ public class Game extends Observable {
 //                index = (index < 4) ? ++index : 1;
 //                turn = new Turn(players.get(index - 1));
 //        }
-        System.out.println(toString());
         refresh();
     }
 
