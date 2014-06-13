@@ -26,6 +26,9 @@ import java.util.Observable;
  */
 public class Game extends Observable {
 
+    /**
+     * Constant for the Board/fieldArray-Size.
+     */
     private static final int BOARD_SIZE = 40;
     /**
      * defines number of expected players
@@ -55,7 +58,9 @@ public class Game extends Observable {
      * indicates if player is on move (no roll)
      */
     private boolean isOnMove;
-
+    /**
+     * Flag for finished or not.
+     */
     private boolean finished;
 
     /**
@@ -86,14 +91,26 @@ public class Game extends Observable {
         return index;
     }
 
+    /**
+     * Getter for flag if finished.
+     * @return 
+     */
     public boolean isFinished() {
         return finished;
     }
 
+    /**
+     * Sets the finished flag.
+     * @param finished Sets the flag if finished - true, or not - false.
+     */
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
 
+    /**
+     * Getter for the list of players.
+     * @return current player.
+     */
     public List<Player> getPlayers() {
         return players;
     }
@@ -201,7 +218,10 @@ public class Game extends Observable {
         notifyObservers();
     }
 
-    
+    /**
+     * Sets the isOnMove-Flag.
+     * @param onMove 
+     */
     public void setOnMove(boolean onMove) {
         isOnMove = onMove;
         refresh();
@@ -212,30 +232,30 @@ public class Game extends Observable {
         refresh();
     }
 
+    /**
+     * Getter for isOnMove-flag
+     * @return 
+     */
     public boolean isOnMove() {
         return isOnMove;
     }
 
+    /**
+     * Initiates the next turn of a player.
+     */
     private void nextTurn() {
-//        if(!players.get(index-1).canMoveStart()){
-//                index = (index < 4) ? ++index : 1;
-////                turn = new Turn(players.get(index - 1));
-//        }
-//        else
-//            if (players.get(index - 1).pawnsCanMove()) {
             if (turn.progress()) {
-//                if(!players.get(index-1).canMoveStart() && players.get(index - 1).pawnsCanMove()) {
                     index = (index < 4) ? ++index : 1;
                     turn = new Turn(players.get(index - 1));
-//                }
             }
-//        } else {
-//                index = (index < 4) ? ++index : 1;
-//                turn = new Turn(players.get(index - 1));
-//        }
+
         refresh();
     }
 
+    /**
+     * ToString for the Actionpart.
+     * @return m - move, r - roll action.
+     */
     public String moveToString() {
         String result;
         if (finished) {
@@ -244,6 +264,11 @@ public class Game extends Observable {
         return result;
     }
 
+    /**
+     * ToString for the fieldsArray.
+     * @param list fieldarray
+     * @return String
+     */
     public String listToString(List<Field> list) {
         StringBuilder result = new StringBuilder();
         result.append("[");

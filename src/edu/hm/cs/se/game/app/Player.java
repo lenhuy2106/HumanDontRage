@@ -263,31 +263,58 @@ public class Player {
         return endFields.get(index).getPawn() == null;
     }
 
+    /**
+     * Checks if the startField is occupied.
+     * @return true - if not occupied, else false.
+     */
     public boolean freeStart() {
         return startField.getPawn() == null;
     }
 
+    /**
+     * Checks if a own pawn is on the startField.
+     * @return true - if own pawn is on the startField, else false.
+     */
     public boolean ownPawnOnStart() {
         boolean result = startField.getPawn() != null ? startField.getPawn().getIndex() == index : false;
         return result;
     }
 
+    /**
+     * Sends pawn to the endField with index
+     * @param endID index of the endField
+     */
     public void sendToEnd(int endID) {
         endFields.get(endID).setPawn(new Pawn(index));
     }
 
+    /**
+     * Getter for the index of the current player.
+     * @return index of the current player.
+     */
     public int getID() {
         return index;
     }
 
+    /**
+     * ToString for homeFieldarray
+     * @return String
+     */
     public String homeToString() {
         return game.listToString(homeFields);
     }
-
+    
+    /**
+     * ToString for endFieldarray
+     * @return String
+     */
     public String endToString() {
         return game.listToString(endFields);
     }
 
+    /**
+     * Notifies game, that its finished.
+     */
     public void finished() {
         game.setFinished(true);
     }

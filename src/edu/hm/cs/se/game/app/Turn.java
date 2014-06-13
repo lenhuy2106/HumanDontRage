@@ -147,10 +147,9 @@ public class Turn {
         return nextPlayer;
     }
 
-    public boolean canMoveStart(){
-        return player.canMoveStart();
-    }
-
+    /**
+     * Creates the Winner/End-Window of the finished game.
+     */
     private void windowDude(){
         //1. Create the frame.
         JFrame frame = new JFrame();
