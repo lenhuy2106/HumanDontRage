@@ -115,14 +115,19 @@ public class Player {
         for (Field field : fields) {
             if (field.getPawn() != null) {
                 if (field.getPawn().getIndex() == index) {
-                    if (targetEndField(field)) {
-                        final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
-                        final int endPos = fields.indexOf(field) - startCap + getDice();
-                        if (freeEnd(endPos)) {
-                            canMove = true;
-                            break;
+                    if(targetExceedsFields(field)){
+                        if(targetIsEndField(field)) {
+                            final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
+                            final int endPos = fields.indexOf(field) - startCap + getDice();
+                            if (freeEnd(endPos)) {
+                                canMove = true;
+                                break;
+                            }
                         }
-                    } else if (fields.get(field.getIndex() + getDice()).getIndex() != index) {
+                    } else if (fields.get((fields.indexOf(field) + getDice()) % fields.size()).getPawn() == null) {
+                        canMove = true;
+                        break;
+                    } else if (fields.get((fields.indexOf(field) + getDice()) % fields.size()).getPawn().getIndex() != index){
                         canMove = true;
                         break;
                     }
@@ -185,7 +190,7 @@ public class Player {
         }
     }
 
-    public boolean targetEndField(Field field) {
+    public boolean targetIsEndField(Field field) {
         boolean isEnd = false;
         final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
         final int endPos = fields.indexOf(field) - startCap + getDice();
@@ -195,6 +200,18 @@ public class Player {
             }
         }
         return isEnd;
+    }
+    
+    public boolean targetExceedsFields(Field field) {
+        boolean exceeded = false;
+        final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
+        final int endPos = fields.indexOf(field) - startCap + getDice();
+        if (startCap > fields.indexOf(field) && startCap <= fields.indexOf(field) + getDice()) {
+            if (endPos < 6) {
+                exceeded = true;
+            }
+        }
+        return exceeded;        
     }
 
     public boolean freeEnd(int index) {
