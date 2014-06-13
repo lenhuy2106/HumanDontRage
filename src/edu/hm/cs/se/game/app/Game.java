@@ -190,6 +190,7 @@ public class Game extends Observable {
         notifyObservers();
     }
 
+    
     public void setOnMove(boolean onMove) {
         isOnMove = onMove;
         refresh();

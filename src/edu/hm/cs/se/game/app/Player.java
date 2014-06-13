@@ -109,6 +109,10 @@ public class Player {
         return pawnsOnMove;
     }
 
+    /**
+     * Checks if any pawn of the current player can move.
+     * @return true - if there is one moveable pawn, else false.
+     */
     public boolean pawnsCanMove() {
         boolean canMove = false;
 
@@ -137,6 +141,10 @@ public class Player {
         return canMove;
     }
 
+    /**
+     * Checks how many pawns are on the homefields.
+     * @return numeral value of pawns on homefields.
+     */
     public int pawnsOnHome() {
         int pawnsOnHome = 0;
         for (Field field : homeFields) {
@@ -146,7 +154,10 @@ public class Player {
         }
         return pawnsOnHome;
     }
-
+    /**
+     * Checks how many pawns are on the endfields.
+     * @return numeral value of pawns on endfields.
+     */
     public int pawnsOnEnd() {
         int pawnsOnEnd = 0;
         for (Field field : endFields) {
@@ -157,7 +168,12 @@ public class Player {
         return pawnsOnEnd;
     }
 
-    public boolean startPawnMayMove(boolean autoMove) {
+    /**
+     * Checks if the pawn on the startfield can move and automatically moves him/it.
+     * @param autoMove defines if method does the automove or not.
+     * @return true if he can move, else false.
+     */
+    public boolean startPawnMayMove(final boolean autoMove) {
         boolean result = canMoveStart();
         if (result && autoMove) {
             game.setOnMove(true);
@@ -166,6 +182,10 @@ public class Player {
         return result;
     }
 
+    /**
+     * Checks if the pawn on the startfield is able to move.
+     * @return true - moveable, else false.
+     */
     public boolean canMoveStart(){
         int startId = (index - 1) * 10;
         Field targetField = fields.get(startId + getDice());
@@ -174,10 +194,18 @@ public class Player {
         return result;
     }
 
+    /**
+     * Notifies the game, that current player is on move now.
+     */
     public void onMove() {
         game.setOnMove(true);
     }
 
+    /**
+     * Sends pawn on the given field back home.
+     * Removes the pawn from the fieldsarray and puts a new one back to the homearray.
+     * @param fieldID targetfield with the pawn on it.
+     */
     public void sendBackHome(int fieldID){
 	for(Field field : homeFields) {
             if(field.getPawn() == null){
@@ -190,6 +218,12 @@ public class Player {
         }
     }
 
+    /**
+     * Checks if the targetField is an endField of the current player.
+     * 
+     * @param field field of the pawn, which is tested.
+     * @return true - if targetField is an endField of the currentPlayer, else false.
+     */
     public boolean targetIsEndField(Field field) {
         boolean isEnd = false;
         final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
@@ -202,6 +236,12 @@ public class Player {
         return isEnd;
     }
     
+    /**
+     * Checks if the targetField exceeds the range of the normal field.
+     * Includes endFields and shooting over them.
+     * @param field field of the pawn, which is tested.
+     * @return true - if targetField exceeds the normal fieldarray, else false.
+     */
     public boolean targetExceedsFields(Field field) {
         boolean exceeded = false;
         final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
@@ -214,6 +254,11 @@ public class Player {
         return exceeded;        
     }
 
+    /**
+     * Checks if the endField at index is free.
+     * @param index index of the endfield which is tested.
+     * @return true - for free endField at this index, else false.
+     */
     public boolean freeEnd(int index) {
         return endFields.get(index).getPawn() == null;
     }
