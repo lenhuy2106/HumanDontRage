@@ -121,6 +121,7 @@ public class Turn {
                 break;
             case 3:
                 if (player.pawnsOnEnd() == 4) {             // rule 10
+                    player.finished();
                     windowDude();
 //                    System.exit(0);
 

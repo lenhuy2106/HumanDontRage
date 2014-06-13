@@ -201,7 +201,7 @@ public class Player {
         }
         return isEnd;
     }
-    
+
     public boolean targetExceedsFields(Field field) {
         boolean exceeded = false;
         final int startCap = (field.getPawn().getIndex() - 1 == 0) ? fields.size() : (field.getPawn().getIndex() - 1) * 10;
@@ -211,7 +211,7 @@ public class Player {
                 exceeded = true;
             }
         }
-        return exceeded;        
+        return exceeded;
     }
 
     public boolean freeEnd(int index) {
@@ -241,5 +241,9 @@ public class Player {
 
     public String endToString() {
         return game.listToString(endFields);
+    }
+
+    public void finished() {
+        game.setFinished(true);
     }
 }
