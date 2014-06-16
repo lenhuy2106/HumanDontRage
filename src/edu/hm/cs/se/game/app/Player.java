@@ -47,7 +47,7 @@ public class Player {
      * initializes a new player.
      *
      * @param index: index that represents color of the player (0 < index <= 4).
-     * @param fields: player independent game fields
+     * @param board: player independent game fields
      * @param game: reference to the game
      */
     public Player(int index, GameBoard board, Game game) {
@@ -220,7 +220,7 @@ public class Player {
 
     /**
      * Checks if the targetField is an endField of the current player.
-     * 
+     *
      * @param field field of the pawn, which is tested.
      * @return true - if targetField is an endField of the currentPlayer, else false.
      */
@@ -303,7 +303,7 @@ public class Player {
     public String homeToString() {
         return game.listToString(homeFields);
     }
-    
+
     /**
      * ToString for endFieldarray
      * @return String
