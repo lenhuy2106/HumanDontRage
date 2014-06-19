@@ -177,7 +177,7 @@ public class Player {
         boolean result = canMoveStart();
         if (result && autoMove) {
             game.setOnMove(true);
-            game.move(startField);
+            game.move(fields.indexOf(startField));
         }
         return result;
     }

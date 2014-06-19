@@ -33,7 +33,7 @@ public class Game extends Observable {
     /**
      * defines number of expected players
      */
-    private static final int NUMBER_OF_PLAYERS = 4;
+    private static int numberOfPlayers;
     /**
      * list of all players
      */
@@ -42,6 +42,10 @@ public class Game extends Observable {
      * list of all simple game fields
      */
     private final List<Field> fields;
+    /**
+     * Controls the interaction between client and server.
+     */
+    private Proxy proxy;
     /**
      * inhabits the game logic
      */
@@ -62,22 +66,44 @@ public class Game extends Observable {
      * Flag for finished or not.
      */
     private boolean finished;
+    /**
+     * Indicates if game is played on a network.
+     */
+    private final boolean isNetwork;
+
+    private Thread thread;
+
+    private int myColor;
 
     /**
      * Initializes a new game and selects the first player.
      *
      * @param board: model of the game.
      */
-    public Game(GameBoard board) {
+    public Game(GameBoard board, int number, String ipAddress, int port) throws InterruptedException {
         fields = board.getFields();
+        isNetwork = !ipAddress.equals("");
+        this.numberOfPlayers = number;
+
+        if (isNetwork) {
+            proxy = new Proxy(this, ipAddress, port);
+            thread = new Thread(proxy);
+	    thread.start();
+
+            System.out.println("Waiting for game to start...");
+            while (proxy.isIdle()) {
+                Thread.sleep(1000);
+            }
+            System.out.println("Game starts!");
+        }
 
         // initialize four players
-        for (int i = 1; i <= NUMBER_OF_PLAYERS; i++) {
+        for (int i = 1; i <= numberOfPlayers; i++) {
             Player player = new Player(i, board, this);
             players.add(player);
         }
         index = 1;
-        turn = new Turn(players.get(index-1));
+        turn = new Turn(players.get(0));
         isOnMove = false;
         finished = false;
     }
@@ -93,7 +119,7 @@ public class Game extends Observable {
 
     /**
      * Getter for flag if finished.
-     * @return 
+     * @return
      */
     public boolean isFinished() {
         return finished;
@@ -105,6 +131,14 @@ public class Game extends Observable {
      */
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public void setMyColor(int myColor) {
+        this.myColor = myColor;
+    }
+
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        Game.numberOfPlayers = numberOfPlayers;
     }
 
     /**
@@ -119,8 +153,15 @@ public class Game extends Observable {
      * roll a random number between 1 and 6.
      */
     public void roll() {
-        dice = (int) ((Math.random()) * 6 + 1);
-        roll(dice);
+        if (index == myColor) {
+            dice = (int) ((Math.random()) * 6 + 1);
+
+            if (isNetwork) {
+                proxy.sendRoll(dice);
+            } else {
+                roll(dice);
+            }
+        }
     }
 
     /**
@@ -141,8 +182,59 @@ public class Game extends Observable {
      * @param fieldIndex: index of the field where pawn is situated.
      */
     public void move(int fieldIndex) {
+
+
         Field field = fields.get(fieldIndex);
-        move(field);
+        if (field.getPawn() != null && index == field.getPawn().getIndex()) {
+
+            boolean isOwnPawn = field.getPawn() != null ? index == field.getPawn().getIndex() : false;
+            boolean isSimpleField = fields.indexOf(field) != -1;
+            int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
+            Field targetField = fields.get(nextId);
+            Pawn targetPawn = targetField.getPawn();
+            boolean freeTarget = targetPawn != null ?
+                    targetPawn.getIndex() != index : true;
+
+            final Player currentPlayer = players.get(field.getPawn().getIndex()-1);
+            final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
+            final int endPos = fields.indexOf(field) - startCap + dice;
+
+            freeTarget &= (endPos < 4 && startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice) ?
+                    currentPlayer.freeEnd(endPos) : true;
+
+            if (isSimpleField && isOwnPawn && isOnMove && freeTarget) {
+
+    //            System.err.println(startCap);
+
+                // if index of startfield - currentfield + dice between 0 and 6. it can land on an endfield
+                if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice) {
+    //                System.err.println("test");
+                    if(endPos < 4 ){
+    //                    System.err.println("cmon just abit");
+                        if(currentPlayer.freeEnd(endPos)){
+                            currentPlayer.sendToEnd(endPos);
+                            field.setPawn(null);
+    //                        System.err.println("'Infiltraded");
+                        }
+                    }
+                }
+                else {
+                    // handling movement on field including sending back enemy pawns
+                    if(targetPawn == null) {
+                        targetField.setPawn(field.getPawn());
+                        field.setPawn(null);
+                    } else if(targetPawn.getIndex() != index) {
+                        players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
+    //                    System.err.println("SEND HOME YO!");
+                        targetField.setPawn(field.getPawn());
+                        field.setPawn(null);
+                    }
+                }
+                nextTurn();
+                setOnMove(false);
+            }
+            refresh();
+        }
     }
 
     /**
@@ -152,53 +244,13 @@ public class Game extends Observable {
      * @param field: field where pawn is situated.
      */
     public void move(Field field) {
-        boolean isOwnPawn = field.getPawn() != null ? index == field.getPawn().getIndex() : false;
-        boolean isSimpleField = fields.indexOf(field) != -1;
-        int nextId = (fields.indexOf(field) + dice) % BOARD_SIZE;
-        Field targetField = fields.get(nextId);
-        Pawn targetPawn = targetField.getPawn();
-        boolean freeTarget = targetPawn != null ?
-                targetPawn.getIndex() != index : true;
-
-        final Player currentPlayer = players.get(field.getPawn().getIndex()-1);
-        final int startCap = (field.getPawn().getIndex()-1 == 0) ? BOARD_SIZE : (field.getPawn().getIndex()-1) * 10;
-        final int endPos = fields.indexOf(field) - startCap + dice;
-
-        freeTarget &= (endPos < 4 && startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice) ?
-                currentPlayer.freeEnd(endPos) : true;
-
-        if (isSimpleField && isOwnPawn && isOnMove && freeTarget) {
-
-//            System.err.println(startCap);
-
-            // if index of startfield - currentfield + dice between 0 and 6. it can land on an endfield
-            if(startCap > fields.indexOf(field) && startCap <= fields.indexOf(field)+dice) {
-//                System.err.println("test");
-                if(endPos < 4 ){
-//                    System.err.println("cmon just abit");
-                    if(currentPlayer.freeEnd(endPos)){
-                        currentPlayer.sendToEnd(endPos);
-                        field.setPawn(null);                                        // STILL DOESNT WORK
-//                        System.err.println("'Infiltraded");
-                    }
-                }
+        if (index == myColor) {
+            if (isNetwork) {
+                proxy.sendMove(fields.indexOf(field));
+            } else {
+                move(fields.indexOf(field));
             }
-            else {
-                // handling movement on field including sending back enemy pawns
-                if(targetPawn == null) {
-                    targetField.setPawn(field.getPawn());
-                    field.setPawn(null);
-                } else if(targetPawn.getIndex() != index) {
-                    players.get(targetPawn.getIndex()-1).sendBackHome(nextId);
-//                    System.err.println("SEND HOME YO!");
-                    targetField.setPawn(field.getPawn());
-                    field.setPawn(null);
-                }
-            }
-            nextTurn();
-            setOnMove(false);
         }
-        refresh();
     }
 
     /**
@@ -220,21 +272,16 @@ public class Game extends Observable {
 
     /**
      * Sets the isOnMove-Flag.
-     * @param onMove 
+     * @param onMove
      */
     public void setOnMove(boolean onMove) {
         isOnMove = onMove;
         refresh();
     }
 
-    public void setOnBash(boolean onBash) {
-        isOnMove = onBash;
-        refresh();
-    }
-
     /**
      * Getter for isOnMove-flag
-     * @return 
+     * @return
      */
     public boolean isOnMove() {
         return isOnMove;
@@ -245,7 +292,7 @@ public class Game extends Observable {
      */
     private void nextTurn() {
             if (turn.progress()) {
-                    index = (index < 4) ? ++index : 1;
+                    index = (index < numberOfPlayers) ? ++index : 1;
                     turn = new Turn(players.get(index - 1));
             }
 

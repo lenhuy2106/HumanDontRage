@@ -40,7 +40,7 @@ public class TestClient {
 	@Before
 	public void setUp() throws Exception {
 		GameBoard board = new GameBoard();
-		game = new Game(board);
+		game = new Game(board, 4, "", 0);
 	}
 
 	/**
